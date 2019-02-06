@@ -1,0 +1,57 @@
+/* .form-style {
+    font-family: 'Open Sans Condensed', arial, sans;
+    align-content: flex-start;
+	width: 100%;
+    padding: 10px;
+	background: #FFFFFF;
+	margin-top: 15px;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.22);
+	-moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.22);
+	-webkit-box-shadow:  0px 0px 1px rgba(0, 0, 0, 0.22);
+} */
+.form-control {
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    /* border: none;
+    border-bottom: rgba(19, 22, 19, 0.582); */
+	box-shadow: 1px 1px 4px #EBEBEB;
+	-moz-box-shadow: 1px 1px 4px #EBEBEB;
+	-webkit-box-shadow: 1px 1px 4px #EBEBEB;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	padding: 7px;
+    outline: none;
+    font-size: 12px;
+    height: 30px;
+}
+label {
+    font-size: 12px;
+}
+
+th {
+    font-size: .8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+td {
+    font-size: .8rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+    padding: .55rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+.btn-sm {
+    padding: .10rem .4rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}

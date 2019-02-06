@@ -40,13 +40,13 @@ export class TaskService {
   addTask(task: ITask): Observable<ITask> {
     console.log('in service');
     console.log(task);
-    return this.http.post<ITask>('http://localhost:3000/' ,JSON.stringify(task), this.httpOptions)
+    return this.http.post<ITask>('http://localhost:8081/TaskTrackerRest/addtask' ,JSON.stringify(task), this.httpOptions)
       .pipe(
       catchError(this.handleError)
       );
   }
   getTasks(): Observable<any> {
-    return this.http.get('http://localhost:3000/' + 'products').pipe(
+    return this.http.get('http://localhost:8081/TaskTrackerRest/task').pipe(
       map(this.extractData));
 
   }

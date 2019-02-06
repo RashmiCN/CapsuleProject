@@ -17,7 +17,6 @@ export class AddTaskComponent implements OnInit {
       startDate: new Date(),
       endDate: new Date()
     };
-  // constructor() { }
   constructor(private taskService: TaskService, private router: Router) {}
   ngOnInit() {
   }

@@ -9,7 +9,7 @@ import { TaskService } from '../task.service';
   styleUrls: ['./view-task.component.css']
 })
 export class ViewTaskComponent implements OnInit {
-  edit: string = 'Edit';
+  edit: string = 'Edit Task';
   allTask : any[];
   vtask: ITask[] = [
     {
@@ -51,7 +51,7 @@ export class ViewTaskComponent implements OnInit {
   constructor(private taskService: TaskService, private router: Router) { }
   
   ngOnInit() {
-    // this.getTasks();
+    this.getTasks();
   }
 
   getTasks() {
@@ -64,7 +64,7 @@ export class ViewTaskComponent implements OnInit {
 
   editTask(editTask:ITask) {
     if(this.edit == 'Save!'){
-      this.edit = 'Edit';
+      this.edit = 'Edit Task';
     }else {
       this.edit = 'Save!';
     };

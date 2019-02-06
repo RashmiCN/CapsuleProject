@@ -1,38 +1,38 @@
 
 <div class="container">
-<form>
+<form class="form-style"> 
   <!-- Row 1 design -->
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="inputTask">Task</label>
       <input type="text" class="form-control" id="inputTask" [(ngModel)]="ChildTaskFilt"  name='ChildTaskFilt' placeholder="Task Name">
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="inputPTask">Parent Task</label>
       <input type="text" class="form-control" id="inputPTask" [(ngModel)]="parentTaskFilt" name='parentTaskFilt' placeholder="Parent Task Name">
     </div>  
   </div>
   <!-- Row 2 design -->
-  <div class="form-row">
-    <div class="form-group col-md-3">
+  <div class="form-group row">
+    <div class="form-group col-md-2">
       <label for="inputStartPriority">Start Priority</label>
-      <input type="number" class="form-control" [(ngModel)]="StartPriorityFilt" name='StartPriorityFilt' id="inputStartPriority">
+      <input type="number" class="form-control" [(ngModel)]="StartPriorityFilt" name='StartPriorityFilt' id="inputStartPriority" placeholder="Start priority">
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputEndPriority">End Priority</label>
-      <input type="number" class="form-control" [(ngModel)]="EndPriorityFilt" name='EndPriorityFilt' id="inputEndPriority">
+      <input type="number" class="form-control" [(ngModel)]="EndPriorityFilt" name='EndPriorityFilt' id="inputEndPriority" placeholder="End Priority">
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputStartDate">Start Date</label>
-      <input type="date" class="form-control" id="inputStartDate" [(ngModel)]="StartDateFilt" name='StartDateFilt'>
+      <input type="date" class="form-control" id="inputStartDate" [(ngModel)]="StartDateFilt" name='StartDateFilt' placeholder="Start Date">
     </div>
-    <div class="form-group col-md-3">
-      <label for="inputEndDate">End Date</label>
-      <input type="date" class="form-control" id="inputEndDate"  [(ngModel)]="EndDateFilt" name='EndDateFilt'>
+    <div class="form-group col-md-2">
+      <label for="inputEndDate" class="col-form-label">End Date</label>    
+      <input type="date" class="form-control" id="inputEndDate"  [(ngModel)]="EndDateFilt" name='EndDateFilt' placeholder="End Date">
     </div>    
-  </div>
+  </div>  
 </form>
-<table class="table table-hover">
+<table class="table table-hover col-md-8 ">
   <thead>
     <tr>
       <th scope="col">Task</th>
@@ -45,18 +45,13 @@
   </thead>
   <tbody>
     <tr *ngFor="let viewTask of vtask | childTaskFilter :ChildTaskFilt | parentTaskFilter :parentTaskFilt | dateRangeFilter : StartDateFilt : EndDateFilt | priorityFilter : StartPriorityFilt : EndPriorityFilt">
-      <td> <input type="text" class="form-control" [(ngModel)]="viewTask.taskName" [hidden]="!viewtask">{{viewTask.taskName }}</td>
-      <td> <input type="text" class="form-control" [(ngModel)]="viewTask.parentTaskName" [hidden]="!viewtask">{{viewTask.parentTaskName}}</td>
-      <td> <input type="number" class="form-control" [(ngModel)]="viewTask.priority" [hidden]="!viewtask">{{viewTask.priority}}</td>
-      <td> <input type="date" class="form-control" [(ngModel)]="viewTask.startDate" [hidden]="!viewtask">{{viewTask.startDate | date : 'shortDate'}}</td>
-      <td> <input type="date" class="form-control" [(ngModel)]="viewTask.endDate" [hidden]="!viewtask">{{viewTask.endDate | date : 'shortDate'}}</td>
-      <!-- <td contenteditable='true'>{{viewTask.taskName  }}</td> -->
-      <!-- <td contenteditable='true'>{{viewTask.parentTaskName}}</td>
-      <td contenteditable='true'>{{viewTask.priority}}</td>
-      <td contenteditable='true'>{{viewTask.startDate | date : 'shortDate'}}</td>
-      <td contenteditable='true'>{{viewTask.endDate | date : 'shortDate'}}</td> -->
-      <td><button class="btn btn-outline-info" (click)="editTask(viewTask)" (click)="viewtask=!viewtask">{{edit}}</button></td>
-      <td><button class="btn btn-outline-info" (click)="endTask(viewTask)">End</button></td>
+      <td>{{viewTask.taskName }}</td>
+      <td>{{viewTask.parentTaskName}}</td>
+      <td>{{viewTask.priority}}</td>
+      <td>{{viewTask.startDate | date : 'shortDate'}}</td>
+      <td>{{viewTask.endDate | date : 'shortDate'}}</td>
+      <td><button class="btn btn-outline-info btn-sm" (click)="editTask(viewTask)">{{edit}}</button></td>
+      <td><button class="btn btn-outline-info btn-sm" (click)="endTask(viewTask)">End Task</button></td>
     </tr>
   </tbody>
 </table>
