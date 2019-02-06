@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'TaskTracker';
+  public show: boolean = false;
+
+  toggle() {
+    this.show = !this.show; }
 }

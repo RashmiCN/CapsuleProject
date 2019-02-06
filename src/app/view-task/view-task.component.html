@@ -1,0 +1,64 @@
+
+<div class="container">
+<form>
+  <!-- Row 1 design -->
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputTask">Task</label>
+      <input type="text" class="form-control" id="inputTask" [(ngModel)]="ChildTaskFilt"  name='ChildTaskFilt' placeholder="Task Name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPTask">Parent Task</label>
+      <input type="text" class="form-control" id="inputPTask" [(ngModel)]="parentTaskFilt" name='parentTaskFilt' placeholder="Parent Task Name">
+    </div>  
+  </div>
+  <!-- Row 2 design -->
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="inputStartPriority">Start Priority</label>
+      <input type="number" class="form-control" [(ngModel)]="StartPriorityFilt" name='StartPriorityFilt' id="inputStartPriority">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputEndPriority">End Priority</label>
+      <input type="number" class="form-control" [(ngModel)]="EndPriorityFilt" name='EndPriorityFilt' id="inputEndPriority">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputStartDate">Start Date</label>
+      <input type="date" class="form-control" id="inputStartDate" [(ngModel)]="StartDateFilt" name='StartDateFilt'>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputEndDate">End Date</label>
+      <input type="date" class="form-control" id="inputEndDate"  [(ngModel)]="EndDateFilt" name='EndDateFilt'>
+    </div>    
+  </div>
+</form>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Task</th>
+      <th scope="col">Parent</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Start</th>
+      <th scope="col">End</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let viewTask of vtask | childTaskFilter :ChildTaskFilt | parentTaskFilter :parentTaskFilt | dateRangeFilter : StartDateFilt : EndDateFilt | priorityFilter : StartPriorityFilt : EndPriorityFilt">
+      <td> <input type="text" class="form-control" [(ngModel)]="viewTask.taskName" [hidden]="!viewtask">{{viewTask.taskName }}</td>
+      <td> <input type="text" class="form-control" [(ngModel)]="viewTask.parentTaskName" [hidden]="!viewtask">{{viewTask.parentTaskName}}</td>
+      <td> <input type="number" class="form-control" [(ngModel)]="viewTask.priority" [hidden]="!viewtask">{{viewTask.priority}}</td>
+      <td> <input type="date" class="form-control" [(ngModel)]="viewTask.startDate" [hidden]="!viewtask">{{viewTask.startDate | date : 'shortDate'}}</td>
+      <td> <input type="date" class="form-control" [(ngModel)]="viewTask.endDate" [hidden]="!viewtask">{{viewTask.endDate | date : 'shortDate'}}</td>
+      <!-- <td contenteditable='true'>{{viewTask.taskName  }}</td> -->
+      <!-- <td contenteditable='true'>{{viewTask.parentTaskName}}</td>
+      <td contenteditable='true'>{{viewTask.priority}}</td>
+      <td contenteditable='true'>{{viewTask.startDate | date : 'shortDate'}}</td>
+      <td contenteditable='true'>{{viewTask.endDate | date : 'shortDate'}}</td> -->
+      <td><button class="btn btn-outline-info" (click)="editTask(viewTask)" (click)="viewtask=!viewtask">{{edit}}</button></td>
+      <td><button class="btn btn-outline-info" (click)="endTask(viewTask)">End</button></td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+</div>
