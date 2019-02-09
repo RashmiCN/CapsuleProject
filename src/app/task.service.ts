@@ -3,6 +3,7 @@ import { ITask } from 'src/app/add-task/Task';
 import { Observable , throwError } from 'rxjs';
 import { catchError , retry , map, tap} from 'rxjs/operators';
 import {  HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { error } from 'util';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class TaskService {
   endpoint = 'http://localhost:3000/';
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     })
   };
   private extractData(res: Response) {
@@ -51,8 +53,8 @@ export class TaskService {
 
   }
   updateTask(task: ITask): Observable<ITask> {
-    return this.http.put<ITask>('http://localhost:3000/' + 'products/', JSON.stringify(task), this.httpOptions).pipe(
-      // tap(_ => console.log('updated')),
+    return this.http.put<ITask>('/', JSON.stringify(task), this.httpOptions).pipe(
+      tap(_ => console.log('updated')),
       catchError(this.handleError)
     );
   }

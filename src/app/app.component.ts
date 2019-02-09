@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EdittaskComponent } from './edittask/edittask.component';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'TaskTracker';
   public show: boolean = false;
-
+  public hide: boolean = true;
   toggle() {
     this.show = !this.show; }
+  
 }

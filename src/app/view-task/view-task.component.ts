@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ITask } from 'src/app/add-task/Task';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-view-task',
@@ -11,7 +12,11 @@ import { TaskService } from '../task.service';
 export class ViewTaskComponent implements OnInit {
   edit: string = 'Edit Task';
   allTask : any[];
-  vtask: ITask[] = [
+  public show: boolean = false; 
+  private message : ITask;
+  public showEdit: boolean = false; 
+  vtask: ITask[] =
+  [
     {
       taskName: 'Child Task 1',
       priority: 10,
@@ -48,12 +53,17 @@ export class ViewTaskComponent implements OnInit {
       endDate: new Date('10/10/2019')
     },
   ];
-  constructor(private taskService: TaskService, private router: Router) { }
+  constructor(private taskService: TaskService, private router: Router, private data: DataService) { }
   
   ngOnInit() {
-    this.getTasks();
+    // this.getTasks();
   }
-
+  toggle() {
+    this.show = !this.show;
+  }
+  openEdit() {
+    this.showEdit = !this.showEdit;
+  }
   getTasks() {
     this.vtask = [];
     this.taskService.getTasks().subscribe((data) => {
@@ -76,11 +86,17 @@ export class ViewTaskComponent implements OnInit {
       })
     }
   }
+
+  pushToEdit(editTask: ITask){
+    this.showEdit = !this.showEdit;
+    console.log("pushing task to service");
+    this.data.changeMessage(editTask);
+  }
   endTask(endTask:ITask) {
     console.log(endTask);
     this.taskService.updateTask(endTask)
       .subscribe((task) => { }, (err) => {
         console.log(err);
-      })
+      });
   }
 }

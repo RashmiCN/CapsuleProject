@@ -1,4 +1,6 @@
-
+<ng-container *ngIf="showEdit">
+  <app-edittask></app-edittask>
+</ng-container>
 <div class="container">
 <form class="form-style"> 
   <!-- Row 1 design -->
@@ -50,8 +52,8 @@
       <td>{{viewTask.priority}}</td>
       <td>{{viewTask.startDate | date : 'shortDate'}}</td>
       <td>{{viewTask.endDate | date : 'shortDate'}}</td>
-      <td><button class="btn btn-outline-info btn-sm" (click)="editTask(viewTask)">{{edit}}</button></td>
-      <td><button class="btn btn-outline-info btn-sm" (click)="endTask(viewTask)">End Task</button></td>
+      <td><button class="btn btn-outline-info btn-sm" (click)="pushToEdit(viewTask)">{{edit}}</button></td>
+      <td><button class="btn btn-outline-info btn-sm" (click)="endTask(viewTask)">End Task</button></td>      
     </tr>
   </tbody>
 </table>

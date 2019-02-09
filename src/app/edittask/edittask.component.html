@@ -1,19 +1,19 @@
-<div class="container">
-  <div class="row col-6 col-md-4 ">
+<div class="container" style="margin-bottom:20px"> 
+  <div class="row col-6 col-md-4" style="padding-top:20px">
     <form>
-      <div class="form-group float-label-control">
+      <div class="form-group">
         <label for="formGroupExampleInput">Task</label>
         <input type="text" class="form-control" [(ngModel)]='task.taskName' name='atask1' id="formGroupExampleInput"
           placeholder="Task Title">
       </div>
       <div class="form-group">
         <label for="formControlRange">Priority</label>
-        <input type="range" class="form-control-range" [(ngModel)]='task.priority' name='atask2' id="formControlRange">
+        <input type="range" class="custom-range" [(ngModel)]='task.priority' name='atask2' id="formControlRange">
       </div>
       <div class="form-group">
         <label for="formGroupExampleInput">Parent Task</label>
-        <input type="text" class="form-control" [(ngModel)]='task.parentTaskName' name='atask3' id="formGroupExampleInput"
-          placeholder="Parent Task">
+        <input type="text" class="form-control" [(ngModel)]='task.parentTaskName' name='atask3'
+          id="formGroupExampleInput" placeholder="Parent Task">
       </div>
       <div class="form-group">
         <label for="formGroupExampleInput">Start Date</label>
@@ -23,9 +23,7 @@
         <label for="formGroupExampleInput">End Date</label>
         <input type="date" class="form-control" [(ngModel)]='task.endDate' name='atask5' id="formGroupExampleInput">
       </div>
-      <button type="submit" class="btn btn-info" style="margin-right:20px" (click)="editTask(task)">Edit Task</button>
-      <button type="submit" class="btn btn-info" (click)="resetTask()">Reset</button>
+      <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px" (click)="editTask()">Edit Task</button>
     </form>
   </div>
 </div>
-

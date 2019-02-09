@@ -13,7 +13,6 @@ import { DateRangeFilterPipe } from './date-range-filter.pipe';
 import { PriorityFilterPipe } from './priority-filter.pipe';
 import { EdittaskComponent } from './edittask/edittask.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +22,7 @@ import { EdittaskComponent } from './edittask/edittask.component';
     ParentTaskFilterPipe,
     DateRangeFilterPipe,
     PriorityFilterPipe,
-    EdittaskComponent
+    EdittaskComponent,
   ],
   imports: [
     BrowserModule,
