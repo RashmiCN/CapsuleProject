@@ -1,7 +1,12 @@
 {
-  "/": {
-    "target": "http://localhost:3000",
+  "/addtask": {
+    "target": "http://localhost:8082",
     "secure": false,
-    "changeOrigin":true
+    "changeOrigin": true
+  },
+  "/": {
+    "target": "http://localhost:8082",
+    "secure": false,
+    "changeOrigin": true
   }
 }
