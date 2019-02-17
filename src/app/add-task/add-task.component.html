@@ -1,28 +1,52 @@
 <div class="container">
   <div class="row col-6 col-md-4" style="padding-top:20px">
-    <form>
+    <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+      <!-- Task Name  -->
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput">Task</label> -->
-        <input type="text" class="form-control" [(ngModel)]='task.taskName' name='atask1' id="formGroupExampleInput" placeholder="Task Title">
+        <input type="text" class="form-control"  name='atask1' formControlName="taskName" [ngClass]="{ 'is-invalid': submitted && f.taskName.errors }"  id="formGroupExampleInput" placeholder="Task Title">
+        <div *ngIf="submitted && f.taskName.errors" class="invalid-feedback">
+          <div *ngIf="f.taskName.errors.required">Task Name is required</div>
+        </div>
       </div>
+
+      <!-- Priority  -->
+
       <div class="form-group">
         <label for="formControlRange">Priority</label>
-        <input type="range" class="custom-range" [(ngModel)]='task.priority'  name='atask2' id="formControlRange">
+        <input type="range" class="custom-range"   name='atask2' formControlName="priority" [ngClass]="{ 'is-invalid': submitted && f.priority.errors }" id="formControlRange">
+        <div *ngIf="submitted && f.priority.errors" class="invalid-feedback">
+          <div *ngIf="f.priority.errors.required">Priority is required</div>
+        </div>
       </div>
+
+      <!-- Parent Task -->
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput">Parent Task</label> -->
-        <input type="text" class="form-control" [(ngModel)]='task.parentTaskName'  name='atask3' id="formGroupExampleInput" placeholder="Parent Task">
+        <input type="text" class="form-control"   name='atask3' formControlName="parentTaskName" [ngClass]="{ 'is-invalid': submitted && f.parentTaskName.errors }" id="formGroupExampleInput" placeholder="Parent Task">
+        <div *ngIf="submitted && f.parentTaskName.errors" class="invalid-feedback">
+          <div *ngIf="f.parentTaskName.errors.required">Parent Task Name is required</div>
+        </div>
       </div>
+
+      <!-- Start Date -->
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput">Start Date</label> -->
-        <input type="date" class="form-control" [(ngModel)]='task.startDate'  name='atask4' id="formGroupExampleInput">
+        <input type="date" class="form-control"   formControlName="startDate" [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" name='atask4'  id="formGroupExampleInput">
+        <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+          <div *ngIf="f.startDate.errors.required">start Date Name is required</div>
+        </div>
       </div>
+
+      <!-- End Date -->
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput">End Date</label> -->
-        <input type="date" class="form-control" [(ngModel)]='task.endDate'  name='atask5' id="formGroupExampleInput">
+        <input type="date" class="form-control"  name='atask5' formControlName="endDate" [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }" id="formGroupExampleInput">
+        <div *ngIf="submitted && f.endDate.errors" class="invalid-feedback">
+          <div *ngIf="f.endDate.errors.required">end Date Name is required</div>
+        </div>
       </div>
-      <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px" (click)="addTask()">Add Task</button>
+
+      <!-- Let's Submit -->
+      <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px">Add Task</button>
       <button type="submit" class="btn btn-info btn-sm" (click)="resetTask()" >Reset</button>
     </form>
   </div>
 </div>
+      

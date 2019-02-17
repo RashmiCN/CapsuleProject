@@ -13,7 +13,7 @@ export class TaskService {
 
   constructor(private http: HttpClient) { }
 
-  endpoint = 'http://localhost:3000/';
+  endpoint = 'http://localhost:8083/';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export class TaskService {
   addTask(task: ITask): Observable<ITask> {
     console.log('in service');
     console.log(task);
-    return this.http.post<ITask>('http://localhost:8082/addtask' ,JSON.stringify(task), this.httpOptions)
+    return this.http.post<ITask>('http://localhost:8083/addtask' ,JSON.stringify(task), this.httpOptions)
       .pipe(
         tap((task) => console.log("added task")),
         catchError(this.handleError)
@@ -53,8 +53,19 @@ export class TaskService {
       map(this.extractData));
 
   }
+  getTask(task: ITask): Observable<any> {
+    return this.http.get('/gettask').pipe(
+      map(this.extractData));
+
+  }
   updateTask(task: ITask): Observable<ITask> {
-    return this.http.put<ITask>('/', JSON.stringify(task), this.httpOptions).pipe(
+    return this.http.put<ITask>('http://localhost:8083/edittask', JSON.stringify(task), this.httpOptions).pipe(
+      tap(_ => console.log('updated')),
+      catchError(this.handleError)
+    );
+  }
+  updateFlipTask(task: ITask): Observable<ITask> {
+    return this.http.put<ITask>('http://localhost:8083/editFliptask', JSON.stringify(task), this.httpOptions).pipe(
       tap(_ => console.log('updated')),
       catchError(this.handleError)
     );

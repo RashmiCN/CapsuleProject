@@ -20,21 +20,26 @@
 	-webkit-box-shadow: 1px 1px 4px #EBEBEB;
 	border-radius: 0px;
 	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-color: teal;
 	padding: 7px;
     outline: none;
     font-size: 12px;
     height: 30px;
 }
 label {
+    font-family: 'Poiret One', cursive;
+    font-weight: 800;
     font-size: 12px;
+    color: teal;
 }
 
 th {
     font-size: .8rem;
     font-weight: 800;
+    font-family: 'Poiret One', cursive;
     line-height: 1;
-    color: #212529;
+    color: teal;
     text-align: left;
     background-color: #fff;
 }

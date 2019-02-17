@@ -1,4 +1,5 @@
 export interface ITask {
+    taskID: number;
     taskName: string;
     priority: number;
     parentTaskName: string;

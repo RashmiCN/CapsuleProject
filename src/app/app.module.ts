@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ViewTaskComponent } from './view-task/view-task.component';
 import {HttpClientModule} from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChildTaskFilterPipe } from './child-task-filter.pipe';
 import { ParentTaskFilterPipe } from './parent-task-filter.pipe';
 import { DateRangeFilterPipe } from './date-range-filter.pipe';
@@ -28,7 +28,8 @@ import { EdittaskComponent } from './edittask/edittask.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

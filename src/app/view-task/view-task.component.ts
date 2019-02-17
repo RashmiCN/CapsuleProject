@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges, Input} from '@angular/core';
 import { ITask } from 'src/app/add-task/Task';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
@@ -10,51 +10,21 @@ import { DataService } from '../data.service';
   styleUrls: ['./view-task.component.css']
 })
 export class ViewTaskComponent implements OnInit {
-  edit: string = 'Edit Task';
+  edit: string = 'Edit';
+  @Input() reloadmsg:string = "";
   allTask : any[];
   public show: boolean = false; 
   private message : ITask;
   public showEdit: boolean = false; 
-  vtask: ITask[] 
-  // [
-  //   {
-  //     taskName: 'Child Task 1',
-  //     priority: 10,
-  //     parentTaskName: 'Parent Task1',
-  //     startDate: new Date('01/01/2019'),
-  //     endDate: new Date('02/02/2019')
-  //   },
-  //   {
-  //     taskName: 'Child Task 2',
-  //     priority: 20,
-  //     parentTaskName: 'Parent Task1',
-  //     startDate: new Date('03/03/2019'),
-  //     endDate: new Date('04/04/2019')
-  //   },
-  //   {
-  //     taskName: 'Child Task 3',
-  //     priority: 30,
-  //     parentTaskName: 'Parent Task2',
-  //     startDate: new Date('05/05/2019'),
-  //     endDate: new Date('06/06/2019')
-  //   },
-  //   {
-  //     taskName: 'Child Task 3',
-  //     priority: 40,
-  //     parentTaskName: 'Parent Task1',
-  //     startDate: new Date('07/07/2019'),
-  //     endDate: new Date('08/08/2019')
-  //   },
-  //   {
-  //     taskName: 'Child Task 4',
-  //     priority: 50,
-  //     parentTaskName: 'Parent Task2',
-  //     startDate: new Date('09/09/2019'),
-  //     endDate: new Date('10/10/2019')
-  //   },
-  // ];
+  vtask: ITask[];
+
   constructor(private taskService: TaskService, private router: Router, private data: DataService) { }
-  
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    // //Add '${implements OnChanges}' to the class.
+    // this.data.changeReloadMessage.subscribe(message => this.reloadmsg = message);
+  }
   ngOnInit() {
     this.getTasks();
   }
@@ -71,15 +41,14 @@ export class ViewTaskComponent implements OnInit {
       this.vtask = data;
     });
   }
-
   editTask(editTask:ITask) {
-    if(this.edit == 'Save!'){
+    if(this.edit === 'Save!'){
       this.edit = 'Edit Task';
     }else {
       this.edit = 'Save!';
     };
     console.log(editTask);
-    if (this.edit == 'Save!') {
+    if (this.edit === 'Save!') {
       this.taskService.updateTask(editTask)
       .subscribe((task) => { }, (err) => {
         console.log(err);
@@ -92,6 +61,7 @@ export class ViewTaskComponent implements OnInit {
     console.log("pushing task to service");
     this.data.changeMessage(editTask);
   }
+  
   endTask(endTask:ITask) {
     console.log(endTask);
     this.taskService.updateTask(endTask)
