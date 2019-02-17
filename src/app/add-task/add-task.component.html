@@ -1,5 +1,6 @@
 <div class="container">
   <div class="row col-6 col-md-4" style="padding-top:20px">
+    <div class="alert alert-danger" *ngIf ="errorDisplay">{{errorData}}</div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
       <!-- Task Name  -->
       <div class="form-group">

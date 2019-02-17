@@ -21,6 +21,8 @@ export class AddTaskComponent implements OnInit {
       endDate: new Date()
     };
   addTaskForm: FormGroup;
+  errorData: '';
+  errorDisplay: boolean = false;
   reloadmsg: string = 'relaodView';
   submitted = false;
 
@@ -46,6 +48,8 @@ export class AddTaskComponent implements OnInit {
 
     // alert('SUCCESS!! :-)')
   }
+
+  
   addTask() {
     this.task.taskID = 0;
     console.log(this.addTaskForm.value);
@@ -53,6 +57,8 @@ export class AddTaskComponent implements OnInit {
     console.log(this.task);
     this.taskService.addTask(this.task).subscribe((task) => {}, (err) => {
       console.log(err);
+      this.errorData = err;
+      this.errorDisplay = !this.errorDisplay;
     });
     // this.data.changeReloadMessage(this.reloadmsg);
   }
