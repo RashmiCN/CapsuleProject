@@ -71,6 +71,7 @@ export class AddTaskComponent implements OnInit {
       startDate: null,
       endDate: null
     };
+    // this.addTaskForm.value = this.task;
   }
   get f() { return this.addTaskForm.controls; }
 }
