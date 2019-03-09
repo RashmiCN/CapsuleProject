@@ -21,13 +21,17 @@ export class AddTaskComponent implements OnInit {
       endDate: new Date()
     };
   addTaskForm: FormGroup;
-  errorData: '';
+  errorData: string = '';
   errorDisplay: boolean = false;
   reloadmsg: string = 'relaodView';
   submitted = false;
   taskPorC: string = 'Click to Add Parent';
   show = false;
   hide = true;
+  proceedAddInd: boolean = false;
+  todaysDate: Date;
+  enDtTemp: Date;
+  strtDtTemp: Date;
 
   constructor(private formBuilder: FormBuilder, private taskService: TaskService, private router: Router, private data: DataService) {}
   ngOnInit() {
@@ -49,21 +53,40 @@ export class AddTaskComponent implements OnInit {
       this.addTask();
     }
 
-    // alert('SUCCESS!! :-)')
   }
 
-  
   addTask() {
     this.task.taskID = 0;
     console.log(this.addTaskForm.value);
     this.task = this.addTaskForm.value;
     console.log(this.task);
+    this.checkEndDate(this.task);
+    if (this.proceedAddInd) {
     this.taskService.addTask(this.task).subscribe((task) => {}, (err) => {
       console.log(err);
       this.errorData = err;
       this.errorDisplay = !this.errorDisplay;
     });
+    } else {
+      this.errorData = 'End Date cannot be Before Begin date';
+      this.errorDisplay = !this.errorDisplay;
+    }
     // this.data.changeReloadMessage(this.reloadmsg);
+  }
+  checkEndDate(addTask: ITask) {
+    this.todaysDate = new Date();
+    this.enDtTemp = new Date(addTask.endDate);
+    this.strtDtTemp = new Date(addTask.startDate);
+    console.log('check today' + this.todaysDate.valueOf());
+    console.log('end check' + this.enDtTemp.valueOf());
+    console.log('start check' + this.strtDtTemp.valueOf());
+    // See if end date isnt before start date
+    if (this.strtDtTemp.valueOf() > this.enDtTemp.valueOf()) {
+      this.proceedAddInd = false;
+    } else {
+      this.proceedAddInd = true;
+    }
+    console.log(this.proceedAddInd);
   }
   resetTask() {
     this.task = {

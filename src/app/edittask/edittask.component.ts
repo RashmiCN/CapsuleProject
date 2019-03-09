@@ -16,6 +16,8 @@ export class EdittaskComponent implements OnInit {
   tempplacehold: string;
   getTask: ITask;
   flipped: string = 'Flip';
+  errorData: string = '';
+  errorDisplay: boolean = false;
 
   constructor( private taskService: TaskService, private router: Router, private data: DataService) { }
 
@@ -42,10 +44,14 @@ export class EdittaskComponent implements OnInit {
     if (this.flipped === 'Flipped!') {
       this.taskService.updateFlipTask(this.task).subscribe((edtask) => { }, (err) => {
         console.log(err);
+        this.errorData = err;
+        this.errorDisplay = !this.errorDisplay;
       });
     } else {
     this.taskService.updateTask(this.task).subscribe((edtask) => { }, (err) => {
       console.log(err);
+      this.errorData = err;
+      this.errorDisplay = !this.errorDisplay;
     });
     }
   }
