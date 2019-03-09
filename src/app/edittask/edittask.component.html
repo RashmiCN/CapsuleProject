@@ -6,7 +6,7 @@
         <input type="text" class="form-control" [(ngModel)]='task.taskName' name='atask1' id="formGroupExampleInput"
           disabled style="background-color: rgba(234, 240, 239,0.533);font-style: italic;" placeholder="Task Title">
       </div>
-      <div class="form-group">
+      <div class="form-group">  
         <label for="formGroupExampleInput">Parent Task</label>
         <input type="text" class="form-control" [(ngModel)]='task.parentTaskName' name='atask3'
           id="formGroupExampleInput" placeholder="Parent Task">
@@ -14,7 +14,7 @@
       <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px" (click)="flipTask()">{{flipped}}</button>
       <div class="form-group">
         <label for="formControlRange">Priority</label>
-        <input type="range" class="custom-range" [(ngModel)]='task.priority' name='atask2' id="formControlRange">
+        <input type="range" class="custom-range"  min="0" max="30" step="5" [(ngModel)]='task.priority' name='atask2' id="formControlRange">
       </div>
       <div class="form-group">
         <label for="formGroupExampleInput">Start Date</label>

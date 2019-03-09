@@ -4,6 +4,11 @@
     "secure": false,
     "changeOrigin": true
   },
+  "/addParentTask": {
+    "target": "http://localhost:8083",
+    "secure": false,
+    "changeOrigin": true
+  },
   "/": {
     "target": "http://localhost:8083",
     "secure": false,

@@ -25,6 +25,9 @@ export class AddTaskComponent implements OnInit {
   errorDisplay: boolean = false;
   reloadmsg: string = 'relaodView';
   submitted = false;
+  taskPorC: string = 'Click to Add Parent';
+  show = false;
+  hide = true;
 
   constructor(private formBuilder: FormBuilder, private taskService: TaskService, private router: Router, private data: DataService) {}
   ngOnInit() {
@@ -74,4 +77,17 @@ export class AddTaskComponent implements OnInit {
     // this.addTaskForm.value = this.task;
   }
   get f() { return this.addTaskForm.controls; }
+  decideParentChild() {
+    console.log('parent child');
+    if (this.taskPorC === 'Click to Add Parent') {
+      this.taskPorC = 'Click to Add Child';
+      this.show = true;
+      this.hide = false;
+    } else {
+      this.taskPorC = 'Click to Add Parent';
+      this.show = false;
+      this.hide = true;
+    }
+    console.log(this.taskPorC);
+  }
 }

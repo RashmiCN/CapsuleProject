@@ -48,6 +48,15 @@ export class TaskService {
         catchError(this.handleError)
       );
   }
+  addParentTask(parentTaskName:string): Observable<string> {
+    console.log('in service');
+    console.log(parentTaskName);
+    return this.http.post<string>('http://localhost:8083/addParentTask', JSON.stringify(parentTaskName), this.httpOptions)
+      .pipe(
+        tap((task) => console.log("added Parent task")),
+        catchError(this.handleError)
+      );
+  }
   getTasks(): Observable<any> {
     return this.http.get('/task').pipe(
       map(this.extractData));

@@ -1,4 +1,13 @@
 <div class="container">
+  <button type="submit" class="btn btn-outline-success btn-sm" style="margin-right:20px; margin-top:20px;" (click)="decideParentChild()">{{taskPorC}}</button>
+</div>
+<ng-container *ngIf="show">
+  <div class="container">
+    <app-add-parent></app-add-parent>
+  </div>
+</ng-container>
+<ng-container *ngIf="hide">
+<div class="container">
   <div class="row col-6 col-md-4" style="padding-top:20px">
     <div class="alert alert-danger" *ngIf ="errorDisplay">{{errorData}}</div>
     <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
@@ -14,7 +23,7 @@
 
       <div class="form-group">
         <label for="formControlRange">Priority</label>
-        <input type="range" class="custom-range"   name='atask2' formControlName="priority" [ngClass]="{ 'is-invalid': submitted && f.priority.errors }" id="formControlRange">
+        <input type="range" class="custom-range"  min="0" max="30" step="5"  name='atask2' formControlName="priority" [ngClass]="{ 'is-invalid': submitted && f.priority.errors }" id="formControlRange">
         <div *ngIf="submitted && f.priority.errors" class="invalid-feedback">
           <div *ngIf="f.priority.errors.required">Priority is required</div>
         </div>
@@ -50,4 +59,4 @@
     </form>
   </div>
 </div>
-      
+</ng-container>
