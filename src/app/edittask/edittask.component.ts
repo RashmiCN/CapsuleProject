@@ -11,6 +11,8 @@ import { DataService } from '../data.service';
   styleUrls: ['./edittask.component.css']
 })
 export class EdittaskComponent implements OnInit {
+
+  // Input Data
   showEdit: boolean = true;
   task: ITask;
   tempplacehold: string;
@@ -21,11 +23,13 @@ export class EdittaskComponent implements OnInit {
 
   constructor( private taskService: TaskService, private router: Router, private data: DataService) { }
 
+  // we have a data service talking to view component
   ngOnInit() {
     this.data.currentMessage.subscribe(message => this.task = message)
-    console.log(this.task);
+    // console.log(this.task);
   }
 
+  // flip parent and child
   flipTask() {
     this.tempplacehold = this.task.parentTaskName;
     this.task.parentTaskName = this.task.taskName;
@@ -37,7 +41,7 @@ export class EdittaskComponent implements OnInit {
     }
   }
 
-
+  // edit task PUT request
   editTask(edtask:ITask) {
     console.log(this.task);
     // if flipped send to different end point

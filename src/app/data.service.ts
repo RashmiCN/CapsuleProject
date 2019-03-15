@@ -25,12 +25,12 @@ export class DataService {
   constructor() { }
 
   changeMessage(message: ITask) {
-    console.log(message);
+    // console.log(message);
     this.messageSource.next(message)
   }
 
   changeReloadMessage(rMessage: string) {
-    console.log(rMessage);
+    // console.log(rMessage);
     this.messagetoReload.next(rMessage)
   }
 }

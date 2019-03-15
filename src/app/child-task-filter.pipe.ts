@@ -13,7 +13,7 @@ export class ChildTaskFilterPipe implements PipeTransform {
     // console.log(inputArray.filter(item => item.taskName.indexOf(searchString) !== -1));
     if (searchString == null) {
       return inputArray;
-    }else{
+    } else {
     return inputArray.filter(item => item.taskName.indexOf(searchString) !== -1);
     }
   }

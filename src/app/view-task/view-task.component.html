@@ -1,33 +1,47 @@
+<!-- Drop down to edit task -->
 <ng-container *ngIf="showEdit">
   <app-edittask></app-edittask>
 </ng-container>
+
+<!-- The actual View Component -->
 <div class="container">
 <form class="form-style"> 
-  <!-- Row 1 design -->
+  <!-- Filter options Row 1-->
   <div class="form-row">
+    <!-- Filter bu Task Name -->
     <div class="form-group col-md-4">
       <label for="inputTask">Task</label>
       <input type="text" class="form-control" id="inputTask" [(ngModel)]="ChildTaskFilt"  name='ChildTaskFilt' placeholder="Task Name">
     </div>
+
+    <!-- Filter by Parent Task -->
     <div class="form-group col-md-4">
       <label for="inputPTask">Parent Task</label>
       <input type="text" class="form-control" id="inputPTask" [(ngModel)]="parentTaskFilt" name='parentTaskFilt' placeholder="Parent Task Name">
     </div>  
   </div>
-  <!-- Row 2 design -->
+  <!-- Filter Options Row 2 design -->
   <div class="form-group row">
+
+    <!-- Priority Filter begin range-->
     <div class="form-group col-md-2">
       <label for="inputStartPriority">Start Priority</label>
       <input type="number" class="form-control" [(ngModel)]="StartPriorityFilt" name='StartPriorityFilt' id="inputStartPriority" placeholder="Start priority">
     </div>
+
+    <!-- Priority filter end range -->
     <div class="form-group col-md-2">
       <label for="inputEndPriority">End Priority</label>
       <input type="number" class="form-control" [(ngModel)]="EndPriorityFilt" name='EndPriorityFilt' id="inputEndPriority" placeholder="End Priority">
     </div>
+
+    <!-- Start Date -->
     <div class="form-group col-md-2">
       <label for="inputStartDate">Start Date</label>
       <input type="date" class="form-control" id="inputStartDate" [(ngModel)]="StartDateFilt" name='StartDateFilt' placeholder="Start Date">
     </div>
+
+    <!-- End Date -->
     <div class="form-group col-md-2">
       <label for="inputEndDate" class="col-form-label">End Date</label>    
       <input type="date" class="form-control" id="inputEndDate"  [(ngModel)]="EndDateFilt" name='EndDateFilt' placeholder="End Date">
@@ -46,13 +60,16 @@
     </tr>
   </thead>
   <tbody>
+    <!-- Apply All Pipes -->
     <tr *ngFor="let viewTask of vtask | childTaskFilter :ChildTaskFilt | parentTaskFilter :parentTaskFilt | dateRangeFilter : StartDateFilt : EndDateFilt | priorityFilter : StartPriorityFilt : EndPriorityFilt">
       <td>{{viewTask.taskName }}</td>
       <td>{{viewTask.parentTaskName}}</td>
       <td>{{viewTask.priority}}</td>
       <td>{{viewTask.startDate | date : 'shortDate'}}</td>
       <td>{{viewTask.endDate | date : 'shortDate'}}</td>
+      <!-- Edit task -->
       <td><button class="btn btn-outline-info btn-sm"  (click)="pushToEdit(viewTask)">{{edit}}</button></td>
+      <!-- End Task -->
       <td><button class="btn btn-outline-info btn-sm" (click)="endTask(viewTask)">End</button></td>      
     </tr>
   </tbody>

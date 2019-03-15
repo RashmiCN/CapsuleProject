@@ -2,29 +2,40 @@
   <div class="row col-6 col-md-4" style="padding-top:20px">
     <div class="alert alert-danger" *ngIf="errorDisplay">{{errorData}}</div>
     <form>
+      <!-- Task Name -->
       <div class="form-group">
         <label for="formGroupExampleInput">Task</label>
         <input type="text" class="form-control" [(ngModel)]='task.taskName' name='atask1' id="formGroupExampleInput"
           disabled style="background-color: rgba(234, 240, 239,0.533);font-style: italic;" placeholder="Task Title">
       </div>
+
+      <!-- Parent Task Name -->
       <div class="form-group">  
         <label for="formGroupExampleInput">Parent Task</label>
         <input type="text" class="form-control" [(ngModel)]='task.parentTaskName' name='atask3'
           id="formGroupExampleInput" placeholder="Parent Task">
       </div>
+
+      <!-- Flip Option -->
       <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px" (click)="flipTask()">{{flipped}}</button>
       <div class="form-group">
         <label for="formControlRange">Priority</label>
         <input type="range" class="custom-range"  min="0" max="30" step="5" [(ngModel)]='task.priority' name='atask2' id="formControlRange">
       </div>
+
+      <!-- Start Date -->
       <div class="form-group">
         <label for="formGroupExampleInput">Start Date</label>
         <input type="date" class="form-control" [(ngModel)]='task.startDate' name='atask4' id="formGroupExampleInput">
       </div>
+
+      <!-- End Date -->
       <div class="form-group">
         <label for="formGroupExampleInput">End Date</label>
         <input type="date" class="form-control" [(ngModel)]='task.endDate' name='atask5' id="formGroupExampleInput">
       </div>
+
+      <!-- Submit -->
       <button type="submit" class="btn btn-info btn-sm" style="margin-right:20px" (click)="editTask()">Edit Task</button>
     </form>
   </div>

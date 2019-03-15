@@ -12,11 +12,12 @@ import { NgStyle } from '@angular/common';
 })
 export class ViewTaskComponent implements OnInit {
   edit: string = 'Edit';
+  // Lets have input defined
   @Input() reloadmsg:string = "";
-  allTask : any[];
-  public show: boolean = false; 
+  allTask: any[];
+  public show: boolean = false;
   private message : ITask;
-  public showEdit: boolean = false; 
+  public showEdit: boolean = false;
   vtask: ITask[];
   public disableInd: boolean = false;
   public todaysDate: Date;
@@ -28,22 +29,31 @@ export class ViewTaskComponent implements OnInit {
     // //Add '${implements OnChanges}' to the class.
     // this.data.changeReloadMessage.subscribe(message => this.reloadmsg = message);
   }
+
+  // Actions on Initialize
   ngOnInit() {
     this.getTasks();
   }
+
   toggle() {
     this.show = !this.show;
   }
+
+  // edit task?
   openEdit() {
     this.showEdit = !this.showEdit;
   }
+
+  // Get all tasks in system
   getTasks() {
     this.vtask = [];
     this.taskService.getTasks().subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       this.vtask = data;
     });
   }
+
+  // edit task?
   editTask(editTask:ITask) {
     if (this.edit === 'Save!'){
       this.edit = 'Edit Task';
@@ -59,12 +69,13 @@ export class ViewTaskComponent implements OnInit {
     }
   }
 
+  // edit talking to view on data service
   pushToEdit(editTask: ITask){
     this.checkEndDate(editTask);
-    console.log('the disable ind' + this.disableInd );
+    // console.log('the disable ind' + this.disableInd );
     if ( this.disableInd === true) {
       this.showEdit = !this.showEdit;
-      console.log('pushing task to servic');
+      // console.log('pushing task to servic');
       this.data.changeMessage(editTask);
     }
   }
@@ -72,21 +83,21 @@ export class ViewTaskComponent implements OnInit {
   checkEndDate(editTask: ITask) {
     this.todaysDate = new Date();
     this.enDtTemp = new Date(editTask.endDate);
-    console.log('check today' + this.todaysDate.valueOf());
-    console.log('end check' + this.enDtTemp.valueOf());
+    // console.log('check today' + this.todaysDate.valueOf());
+    // console.log('end check' + this.enDtTemp.valueOf());
     if (this.todaysDate.valueOf() <= this.enDtTemp.valueOf()) {
       this.disableInd = true;
     } else {
       this.disableInd = false;
     }
-    console.log(this.disableInd);
+    // console.log(this.disableInd);
   }
 
   endTask(endTask:ITask) {
-    console.log(endTask);
-    console.log('before' + endTask.endDate);
+    // console.log(endTask);
+    // console.log('before' + endTask.endDate);
     endTask.endDate = new Date();
-    console.log('after' + endTask.endDate);
+    // console.log('after' + endTask.endDate);
     this.taskService.updateTask(endTask)
       .subscribe((task) => { }, (err) => {
         console.log(err);

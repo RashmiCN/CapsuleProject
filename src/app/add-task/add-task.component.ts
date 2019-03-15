@@ -12,6 +12,7 @@ import { DataService } from '../data.service';
   styleUrls: ['./add-task.component.css']
 })
 export class AddTaskComponent implements OnInit {
+  // input from the form
   @Input() task = {
       taskID : 0,
       taskName: '',
@@ -20,10 +21,16 @@ export class AddTaskComponent implements OnInit {
       startDate: new Date(),
       endDate: new Date()
     };
+
+  // Form Group definition
   addTaskForm: FormGroup;
+
+  // error message display
   errorData: string = '';
   errorDisplay: boolean = false;
   reloadmsg: string = 'relaodView';
+
+  // Miscellaneous
   submitted = false;
   taskPorC: string = 'Click to Add Parent';
   show = false;
@@ -34,6 +41,8 @@ export class AddTaskComponent implements OnInit {
   strtDtTemp: Date;
 
   constructor(private formBuilder: FormBuilder, private taskService: TaskService, private router: Router, private data: DataService) {}
+
+  // Lets have form validations here
   ngOnInit() {
     this.addTaskForm = this.formBuilder.group({
       taskName: ['', Validators.required],
@@ -43,6 +52,8 @@ export class AddTaskComponent implements OnInit {
       endDate: ['', Validators.required]
     });
   }
+
+  // when submit is clicked
   onSubmit() {
     this.submitted = true;
 
@@ -55,12 +66,14 @@ export class AddTaskComponent implements OnInit {
 
   }
 
+  // Add Child Tash.Rest POST request via task Service
   addTask() {
     this.task.taskID = 0;
-    console.log(this.addTaskForm.value);
+    // console.log(this.addTaskForm.value);
     this.task = this.addTaskForm.value;
-    console.log(this.task);
+    // console.log(this.task);
     this.checkEndDate(this.task);
+
     if (this.proceedAddInd) {
     this.taskService.addTask(this.task).subscribe((task) => {}, (err) => {
       console.log(err);
@@ -71,23 +84,26 @@ export class AddTaskComponent implements OnInit {
       this.errorData = 'End Date cannot be Before Begin date';
       this.errorDisplay = !this.errorDisplay;
     }
-    // this.data.changeReloadMessage(this.reloadmsg);
   }
+
+  // if the end date is before start , error it out
   checkEndDate(addTask: ITask) {
     this.todaysDate = new Date();
     this.enDtTemp = new Date(addTask.endDate);
     this.strtDtTemp = new Date(addTask.startDate);
-    console.log('check today' + this.todaysDate.valueOf());
-    console.log('end check' + this.enDtTemp.valueOf());
-    console.log('start check' + this.strtDtTemp.valueOf());
+    // console.log('check today' + this.todaysDate.valueOf());
+    // console.log('end check' + this.enDtTemp.valueOf());
+    // console.log('start check' + this.strtDtTemp.valueOf());
     // See if end date isnt before start date
     if (this.strtDtTemp.valueOf() > this.enDtTemp.valueOf()) {
       this.proceedAddInd = false;
     } else {
       this.proceedAddInd = true;
     }
-    console.log(this.proceedAddInd);
+    // console.log(this.proceedAddInd);
   }
+
+  // reset the task
   resetTask() {
     this.task = {
       taskID : 0,
@@ -97,9 +113,11 @@ export class AddTaskComponent implements OnInit {
       startDate: null,
       endDate: null
     };
-    // this.addTaskForm.value = this.task;
   }
+
   get f() { return this.addTaskForm.controls; }
+
+  // Are we adding parent or child?
   decideParentChild() {
     console.log('parent child');
     if (this.taskPorC === 'Click to Add Parent') {
@@ -111,6 +129,6 @@ export class AddTaskComponent implements OnInit {
       this.show = false;
       this.hide = true;
     }
-    console.log(this.taskPorC);
+    // console.log(this.taskPorC);
   }
 }
