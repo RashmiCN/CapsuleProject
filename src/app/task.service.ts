@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ITask } from 'src/app/add-task/Task';
+import { ITask } from 'src/app/interfaces/Task';
 import { Observable , throwError } from 'rxjs';
 import { catchError , retry , map, tap} from 'rxjs/operators';
 import {  HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';

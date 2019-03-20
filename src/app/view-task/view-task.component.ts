@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, OnChanges, Input} from '@angular/core';
-import { ITask } from 'src/app/add-task/Task';
+import { ITask } from 'src/app/interfaces/Task';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { DataService } from '../data.service';

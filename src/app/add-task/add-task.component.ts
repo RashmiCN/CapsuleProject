@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ITask } from './Task';
+import { ITask } from '../interfaces/Task';
 import { ActivatedRoute , Router} from '@angular/router';
 import { TaskService } from '../task.service';
 import { DataService } from '../data.service';
@@ -9,7 +9,7 @@ import { DataService } from '../data.service';
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
-  styleUrls: ['./add-task.component.css']
+  styleUrls: ['./add-task.component.css'],
 })
 export class AddTaskComponent implements OnInit {
   // input from the form

@@ -18,5 +18,15 @@
     "target": "http://localhost:8083",
     "secure": false,
     "changeOrigin": true
+  },
+  "/addUser": {
+    "target": "http://localhost:8083",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/getuser": {
+    "target": "http://localhost:8083",
+    "secure": false,
+    "changeOrigin": true
   }
 }

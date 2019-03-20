@@ -10,17 +10,23 @@
   <button type="button" class="btn btn-outline-info btn-sm" style="margin-top:10px">View Task</button> -->
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#" (click)="toggle()"> Add Task</a>
+      <a class="nav-link active" routerLink="/add-project" routerLinkActive="active">Add Project</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">View Task</a>
+      <a class="nav-link active" routerLink="/add-task" routerLinkActive="active">Add Task</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" routerLink="/add-user" routerLinkActive="active">Add User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" routerLink="/view-task" routerLinkActive="active">View Task</a>
     </li>
   </ul>
 </div>
-<ng-container *ngIf="show">
+<!-- <ng-container *ngIf="show">
   <app-add-task></app-add-task>
 </ng-container>
 <div style="margin-top:20px">
   <app-view-task></app-view-task>
-</div>
+</div> -->
 <router-outlet></router-outlet>

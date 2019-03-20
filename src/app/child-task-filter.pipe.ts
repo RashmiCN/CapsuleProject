@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ITask } from 'src/app/add-task/Task';
+import { ITask } from 'src/app/interfaces/Task';
 
 @Pipe({
   name: 'childTaskFilter'

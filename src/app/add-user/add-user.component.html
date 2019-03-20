@@ -1,0 +1,98 @@
+<div class="container">
+<div class="outer-div">
+  <form id="form-group" [formGroup]="addUserForm" (ngSubmit)="onSubmit()" novalidate>
+
+    <div class="row">
+      <div class="col-md-2 ">
+        <label>First Name:</label>
+      </div>
+      <div class="col-md-6 ">
+        <input type="text" class="form-control" formControlName="firstName" id="firstName">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 ">
+        <label>Last Name:</label>
+      </div>
+      <div class="col-md-6 ">
+        <input type="text" class="form-control" formControlName="lastName" id="lastName">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 ">
+        <label>Employee ID:</label>
+      </div>
+      <div class="col-md-6 ">
+        <input type="number" class="form-control" formControlName="employeeId" id="employeeId">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 ">
+      </div>
+      <!-- <div class="col-5 col-sm-5 col-md-5 col-lg-5">
+      </div> -->
+      <div class="col-md-4 ">
+        <button type="submit" class="btn btn-info btn-sm" id="add" [disabled]="!addUserForm.valid"
+          *ngIf="!editable">ADD</button>
+        <button type="button" class="btn btn-info btn-sm" id="add" [disabled]="!addUserForm.valid" *ngIf="editable"
+          (click)="onEditSave()">UPDATE</button>
+        <button type="button" class="btn btn-info btn-sm" id="reset" (click)="addUserForm.reset()"
+          *ngIf="!editable">RESET</button>
+        <button type="button" class="btn btn-info btn-sm" id="reset" (click)="cancelEdit()" *ngIf="editable">CANCEL</button>
+      </div>
+    </div>
+    <div class="row">
+      <p style="color:red; margin-left: 1%;" *ngIf="error">{{error}}</p>
+    </div>
+    <div>
+      <hr>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-md-4" id="sortLabel">
+      <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search_key"
+        (ngModelChange)="onSearch(search_key)" />
+    </div>
+    <div class="col-md-1 " id="sortLabel">
+      <label>Sort:</label>
+    </div>
+    <div class="col-md-6 ">
+      <button type="button" class="btn btn-outline-info btn-sm" id="sortByFirstName" (click)="sort('firstName')">First Name</button>
+      <button type="button" class="btn btn-outline-info btn-sm" id="sortByLastName" (click)="sort('lastName')" style="margin-left:20px;">Last Name</button>
+      <button type="button" class="btn btn-outline-info btn-sm" id="sortById" (click)="sort('employeeId')" style="margin-right:20px;margin-left:20px;">ID</button>
+      <button type="button" class="btn btn-outline-info btn-sm" id="clearFilter" (click)="clearFilter()" style="margin-right:20px;">Clear Filter</button>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <div *ngFor="let user of filtered_users_list">
+    <div class="row" id="users-list">
+      <div class="col-md-7 ">
+        <ul class="list-group">
+          <li class="list-group-item">First Name: {{user.firstName | titlecase}}</li>
+          <li class="list-group-item">Last Name: {{user.lastName | titlecase}}</li>
+          <li class="list-group-item">Employee id: {{user.employeeId}}</li>
+        </ul>
+      </div>
+      <div class="col-md-1 ">
+        <button type="button" class="btn btn-info" id="edit-btn" (click)="onEdit(user)"
+          [disabled]="editable && user._id == edit_id">Edit</button>
+        <br>
+        <br>
+        <button type="button" class="btn btn-info" id="delete-btn" (click)="onDelete(user._id)"
+          [disabled]="editable && user._id == edit_id">Delete</button>
+      </div>
+    </div>
+    <div>
+      <hr>
+    </div>
+  </div>
+</div>
+</div>

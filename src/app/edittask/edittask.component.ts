@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from '../task.service';
 import { Router } from '@angular/router';
-import { ITask } from '../add-task/Task';
+import { ITask } from '../interfaces/Task';
 import { DataService } from '../data.service';
 
 @Component({
