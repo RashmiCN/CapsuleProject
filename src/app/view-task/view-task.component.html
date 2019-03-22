@@ -1,101 +1,100 @@
-<!-- Drop down to edit task -->
-<ng-container *ngIf="showEdit">
-  <app-edittask></app-edittask>
-</ng-container>
-
-<!-- The actual View Component -->
-<div class="container">
-<form class="form-style"> 
-  <!-- Filter options Row 1-->
-  <div class="form-row">
-    <!-- Filter bu Task Name -->
-    <div class="form-group col-md-4">
-      <label for="inputTask">Task</label>
-      <input type="text" class="form-control" id="inputTask" [(ngModel)]="ChildTaskFilt"  name='ChildTaskFilt' placeholder="Task Name">
+<div class="container" style="margin-top: 20px">
+  <div class="outer-div">
+    <div class="row">
+      <div class="col-md-1" id="sortLabel">
+        <label>Project:</label>
+      </div>
+      <div class="col-md-3" id="sortLabel">
+        <input type="text" [(ngModel)]="project" class="form-control" [disabled]="true">
+      </div>
+      <div class="col-md-1" id="sortLabel">
+        <button type="button" class="btn btn-success btn-sm" id="search" data-toggle="modal"
+          data-target="#ProjectModal">Search</button>
+      </div>
+      <div class="col-md-1" id="sortLabel"><label>OrderBy:</label>
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-outline-info btn-sm" style="margin-right: 5px;" id="sortBystartDate" (click)="sort('startDate')">Start Date</button>
+        <button type="button" class="btn btn-outline-info btn-sm" style="margin-right: 5px;" id="sortByendDate" (click)="sort('endDate')">End Date</button>
+        <button type="button" class="btn btn-outline-info btn-sm" style="margin-right: 5px;" id="sortByPriority" (click)="sort('Priority')">Priority</button>
+        <button type="button" class="btn btn-outline-info btn-sm" style="margin-right: 5px;" id="sortByCompleted" (click)="sort('Completed')">Completed</button>
+        <button type="button" class="btn btn-outline-dark btn-sm" style="margin-right: 5px;" id="clearFilter" (click)="clearFilter()">Clear Filter</button>
+      </div>
     </div>
-
-    <!-- Filter by Parent Task -->
-    <div class="form-group col-md-4">
-      <label for="inputPTask">Parent Task</label>
-      <input type="text" class="form-control" id="inputPTask" [(ngModel)]="parentTaskFilt" name='parentTaskFilt' placeholder="Parent Task Name">
-    </div>  
+  
+    <div>
+      <hr>
+    </div>
+  
+    <div *ngFor="let task of tasks">
+      <div class="row">
+        <div class="col-md-2">
+          <h6>Task</h6><br>
+          {{task.task}}
+        </div>
+        <div class="col-md-2">
+          <h6>Parent</h6><br>
+          {{task.parentTaskId?.parentTask}}
+        </div>
+        <div class="col-md-1">
+          <h6>Priority</h6><br>
+          {{task.priority}}
+        </div>
+        <div class="col-md-2">
+          <h6>Start</h6><br>
+          {{task.startDate | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class="col-md-2">
+          <h6>End</h6><br>
+          {{task.endDate | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class="col-md-1">
+          <h6>Status</h6><br>
+          {{task.status | titlecase}}
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-secondary" id="edit" (click)="editTask(task._id)"
+            [disabled]="task.status == 'completed'">Edit</button>
+          <button class="btn btn-secondary" id="delete" (click)="endTask(task._id)"
+            [disabled]="task.status == 'completed'">End</button>
+        </div>
+      </div>
+      <div>
+        <hr>
+      </div>
+    </div>
+  
   </div>
-  <!-- Filter Options Row 2 design -->
-  <div class="form-group row">
-
-    <!-- Priority Filter begin range-->
-    <div class="form-group col-md-2">
-      <label for="inputStartPriority">Start Priority</label>
-      <input type="number" class="form-control" [(ngModel)]="StartPriorityFilt" name='StartPriorityFilt' id="inputStartPriority" placeholder="Start priority">
-    </div>
-
-    <!-- Priority filter end range -->
-    <div class="form-group col-md-2">
-      <label for="inputEndPriority">End Priority</label>
-      <input type="number" class="form-control" [(ngModel)]="EndPriorityFilt" name='EndPriorityFilt' id="inputEndPriority" placeholder="End Priority">
-    </div>
-
-    <!-- Start Date -->
-    <div class="form-group col-md-2">
-      <label for="inputStartDate">Start Date</label>
-      <input type="date" class="form-control" id="inputStartDate" [(ngModel)]="StartDateFilt" name='StartDateFilt' placeholder="Start Date">
-    </div>
-
-    <!-- End Date -->
-    <div class="form-group col-md-2">
-      <label for="inputEndDate" class="col-form-label">End Date</label>    
-      <input type="date" class="form-control" id="inputEndDate"  [(ngModel)]="EndDateFilt" name='EndDateFilt' placeholder="End Date">
-    </div>    
-  </div>  
-</form>
-<table class="table table-hover col-md-8 ">
-  <thead>
-    <tr>
-      <th scope="col">Task</th>
-      <th scope="col">Parent</th>
-      <th scope="col">Priority</th>
-      <th scope="col">Start</th>
-      <th scope="col">End</th>
-      <th colspan="2">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Apply All Pipes -->
-    <tr *ngFor="let viewTask of vtask | childTaskFilter :ChildTaskFilt | parentTaskFilter :parentTaskFilt | dateRangeFilter : StartDateFilt : EndDateFilt | priorityFilter : StartPriorityFilt : EndPriorityFilt">
-      <td>{{viewTask.taskName }}</td>
-      <td>{{viewTask.parentTaskName}}</td>
-      <td>{{viewTask.priority}}</td>
-      <td>{{viewTask.startDate | date : 'shortDate'}}</td>
-      <td>{{viewTask.endDate | date : 'shortDate'}}</td>
-      <!-- Edit task -->
-      <td><button class="btn btn-outline-info btn-sm"  (click)="pushToEdit(viewTask)">{{edit}}</button></td>
-      <!-- End Task -->
-      <td><button class="btn btn-outline-info btn-sm" (click)="endTask(viewTask)">End</button></td>      
-    </tr>
-  </tbody>
-</table>
-<hr>
-</div>
-
-<div class="col-md-1">
-  <button type="button" class="btn btn-primary" id="search" data-toggle="modal" data-target="#UserModal">SEARCH</button>
-</div>
-
-<div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="UserModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+  
+  <!--Project Modal-->
+  <div class="modal fade" id="ProjectModal" tabindex="-1" role="dialog" aria-labelledby="ProjectModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="ProjectModalLabel">Select the project :</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchProject">
+          <br>
+          <br>
+          <div class="input-group mb-3" *ngFor="let project of projects | filterProject : searchProject : 'name'">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="radio" value="{{project._id}}-{{project.project}}" [(ngModel)]="selectedProject">
+              </div>
+            </div>
+            &nbsp; {{project.project}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="saveProject()" [disabled]="!selectedProject">Save
+            changes</button>
+        </div>
       </div>
     </div>
   </div>

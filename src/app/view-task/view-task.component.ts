@@ -1,106 +1,96 @@
-import { Component, OnInit, SimpleChanges, OnChanges, Input} from '@angular/core';
-import { ITask } from 'src/app/interfaces/Task';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProjectService } from '../project.service';
 import { TaskService } from '../task.service';
-import { DataService } from '../data.service';
-import { NgStyle } from '@angular/common';
-
+import { IProject } from '../interfaces/Project';
+import { ITask } from '../interfaces/Task';
+declare var $: any;
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
-  styleUrls: ['./view-task.component.css']
+  styleUrls: ['./view-task.component.css'],
+  providers: [ProjectService, TaskService]
 })
 export class ViewTaskComponent implements OnInit {
-  edit: string = 'Edit';
-  // Lets have input defined
-  @Input() reloadmsg:string = "";
-  allTask: any[];
-  public show: boolean = false;
-  private message : ITask;
-  public showEdit: boolean = false;
-  vtask: ITask[];
-  public disableInd: boolean = false;
-  public todaysDate: Date;
-  public enDtTemp :Date;
-  constructor(private taskService: TaskService, private router: Router, private data: DataService) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    // //Add '${implements OnChanges}' to the class.
-    // this.data.changeReloadMessage.subscribe(message => this.reloadmsg = message);
-  }
+  project: string;
+  projects: IProject[];
+  searchProject: string;
+  selectedProject: string;
+  tasks: ITask[];
 
-  // Actions on Initialize
+  constructor(private projectService: ProjectService,
+              private taskService: TaskService, 
+              private router: Router, 
+              private route: ActivatedRoute
+  ) { }
+
   ngOnInit() {
-    this.getTasks();
+    this.getProjects();
   }
 
-  toggle() {
-    this.show = !this.show;
+  saveProject() {
+    const temp = this.selectedProject.split('-');
+    this.project = temp[1];
+    this.getTasks(temp[0]);
+    $('#ProjectModal').modal('hide');
   }
 
-  // edit task?
-  openEdit() {
-    this.showEdit = !this.showEdit;
+
+  sort(basis) {
+    if (basis === 'startDate') {
+      this.tasks.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    } else if (basis === 'endDate') {
+      this.tasks.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime());
+    } else if (basis === 'Priority') {
+      this.tasks.sort((a, b) => +a.priority - +b.priority);
+    } else if (basis === 'Completed') {
+      this.tasks.sort(function(a, b) {
+        if (a.status < b.status) {
+          return -1;
+        }
+        if (a.status > b.status) {
+          return 1;
+        }
+        return 0;
+      });
+    }
   }
 
-  // Get all tasks in system
-  getTasks() {
-    this.vtask = [];
-    this.taskService.getTasks().subscribe((data) => {
-      // console.log(data);
-      this.vtask = data;
+  clearFilter() {
+    const temp = this.selectedProject.split('-');
+    this.getTasks(temp[0]);
+  }
+
+  getProjects() {
+    this.projectService.getProjects().subscribe(data => {
+      this.projects = data;
+    }, error => {
+      console.log(error);
     });
   }
 
-  // edit task?
-  editTask(editTask:ITask) {
-    if (this.edit === 'Save!'){
-      this.edit = 'Edit Task';
-    } else {
-      this.edit = 'Save!';
-    };
-    console.log(editTask);
-    if (this.edit === 'Save!') {
-      this.taskService.updateTask(editTask)
-      .subscribe((task) => { }, (err) => {
-        console.log(err);
-      })
-    }
+  getTasks(id) {
+    this.taskService.getTasks(id).subscribe(data => {
+      // console.log(data)
+      this.tasks = data;
+    }, error => {
+      console.log(error);
+    });
   }
 
-  // edit talking to view on data service
-  pushToEdit(editTask: ITask){
-    this.checkEndDate(editTask);
-    // console.log('the disable ind' + this.disableInd );
-    if ( this.disableInd === true) {
-      this.showEdit = !this.showEdit;
-      // console.log('pushing task to servic');
-      this.data.changeMessage(editTask);
-    }
+  endTask(id) {
+    this.taskService.setTaskAsComplete(id).subscribe(data => {
+      this.clearFilter();
+    });
   }
 
-  checkEndDate(editTask: ITask) {
-    this.todaysDate = new Date();
-    this.enDtTemp = new Date(editTask.endDate);
-    // console.log('check today' + this.todaysDate.valueOf());
-    // console.log('end check' + this.enDtTemp.valueOf());
-    if (this.todaysDate.valueOf() <= this.enDtTemp.valueOf()) {
-      this.disableInd = true;
-    } else {
-      this.disableInd = false;
-    }
-    // console.log(this.disableInd);
+  editTask(id) {
+    this.router.navigate(['/add-task'], {
+      queryParams: {
+        taskId: id
+      }
+    });
   }
 
-  endTask(endTask:ITask) {
-    // console.log(endTask);
-    // console.log('before' + endTask.endDate);
-    endTask.endDate = new Date();
-    // console.log('after' + endTask.endDate);
-    this.taskService.updateTask(endTask)
-      .subscribe((task) => { }, (err) => {
-        console.log(err);
-      });
-  }
 }

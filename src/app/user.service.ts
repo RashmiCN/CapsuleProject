@@ -52,18 +52,23 @@ export class UserService {
     return body || {};
   }
   // Get all users
-  getusers(): Observable<any> {
-    return this.http.get('http://localhost:8083/user').pipe(
-      map(this.extractData));
-
+  getusers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>('http://localhost:8083/user');
   }
 
   // Get a user
   getuser(id): Observable<IUser> {
     console.log(' in get user service' + id);
-    return this.http.get<IUser>('http://localhost:8083/getuser/${id}');
+    return this.http.get<IUser>('http://localhost:8083/getuser/' + id );
 
   }
+
+  // // Get a user
+  // getuserbyEmpId(id): Observable<IUser> {
+  //   console.log(' in get user service' + id);
+  //   return this.http.get<IUser>('http://localhost:8083/getuseremp/${id}');
+
+  // }
 
   // PUT method to update user
   updateuser(user: IUser): Observable<IUser> {
@@ -75,7 +80,7 @@ export class UserService {
 
   deleteUser(user: IUser): Observable<IUser> {
     return this.http.put<IUser>('http://localhost:8083/deleteUser', JSON.stringify(user), this.httpOptions).pipe(
-      tap(_ => console.log('updated')),
+      tap(_ => console.log('deleted')),
       catchError(this.handleError)
     );
   }

@@ -14,7 +14,7 @@
     width: 100%;
 	padding: 7px;
 	border: none;
-	border-bottom: 1px solid rgb(255, 219, 219);
+	border-bottom: 1px solid rgb(20, 136, 182);
 	background: transparent;
     margin-bottom: 5px;
     font: 16px Arial, Helvetica, sans-serif;
@@ -23,4 +23,9 @@
 }
 label {
     font-size: 15px;
+}
+.modal-header{
+	font-family: 'Molengo', Georgia, Times, serif;
+	background-color: cadetblue;
+	color: white;
 }

@@ -1,8 +1,15 @@
 export interface ITask {
     taskID: number;
+    userId: number;
+    parentId: number;
+    projectId: number;
     taskName: string;
-    priority: number;
-    parentTaskName: string;
     startDate: Date;
     endDate: Date;
+    priority: number;
+    status: string;
+}
+export interface IParentTask {
+    parentId: number;
+    parenttaskName: string;
 }

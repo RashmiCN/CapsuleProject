@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'add-user', component: AddUserComponent },
   { path: 'view-task', component: ViewTaskComponent },
   {
-    path: '', redirectTo: '/add-user',
+    path: '', redirectTo: '/view-task',
     pathMatch: 'full'
   },];
 
