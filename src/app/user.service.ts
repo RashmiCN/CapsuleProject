@@ -62,6 +62,11 @@ export class UserService {
     return this.http.get<IUser>('http://localhost:8083/getuser/' + id );
 
   }
+  getuserByProjectId(id): Observable<IUser> {
+    console.log(' in get user service' + id);
+    return this.http.get<IUser>('http://localhost:8083/getuserbyproject/' + id );
+
+  }
 
   // // Get a user
   // getuserbyEmpId(id): Observable<IUser> {

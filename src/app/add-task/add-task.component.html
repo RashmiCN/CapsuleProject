@@ -90,10 +90,10 @@
         <div class="col-md-4">
           <button type="submit" class="btn btn-info" id="add" [disabled]="((this.addTaskForm.get('ifParent').value) ? false : !(this.addTaskForm.get('user').value)) 
           || !(this.addTaskForm.valid)" *ngIf="!editable">ADD</button>
-          <button type="button" class="btn btn-info" id="add" [disabled]="((this.addTaskForm.get('ifParent').value) ? false : !(this.addTaskForm.get('user').value)) 
+          <button type="button" style="margin-left: 5px" class="btn btn-secondary" id="add" [disabled]="((this.addTaskForm.get('ifParent').value) ? false : !(this.addTaskForm.get('user').value)) 
           || !(this.addTaskForm.valid)" *ngIf="editable" (click)="updateTask()">UPDATE</button>
-          <button type="button" class="btn btn-info" id="reset" (click)="resetForm()" *ngIf="!editable">RESET</button>
-          <button type="button" class="btn btn-info" id="reset" (click)="cancelEdit()" *ngIf="editable">CANCEL</button>
+          <button type="button" class="btn btn-dark" style="margin-left: 5px" id="reset" (click)="resetForm()" *ngIf="!editable">RESET</button>
+          <button type="button" class="btn btn-danger" style="margin-left: 5px" id="reset" (click)="cancelEdit()" *ngIf="editable">CANCEL</button>
   
         </div>
       </div>
@@ -146,16 +146,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <input type="text" placeholder="Search..." [(ngModel)]="searchParent">
+          <input type="text" class="form-control"  placeholder="Search..." [(ngModel)]="searchParent">
           <br>
           <br>
-          <div class="input-group mb-3" *ngFor="let parent of parentsList | filterParentTask : searchParent">
+          <div class="input-group mb-3" *ngFor="let p of parentsList | filterParentTask : searchParent">
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="radio" value="{{parent.parentId}}-{{parent.parentTask}}" [(ngModel)]="selectedParent">
+                <input type="radio" value="{{p.parentId}}-{{p.parentTaskName}}" [(ngModel)]="selectedParent">
               </div>
             </div>
-            &nbsp; {{parent.parentTask}}
+            &nbsp; {{p.parentTaskName}}
           </div>
         </div>
         <div class="modal-footer">
@@ -180,13 +180,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <input type="text" placeholder="Search..." [(ngModel)]="searchUser">
+          <input type="text" class="form-control"  placeholder="Search..." [(ngModel)]="searchUser">
           <br>
           <br>
           <div class="input-group mb-3" *ngFor="let user of usersList | filterUser : searchUser ">
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="radio" value="{{user._id }}-{{user.firstName}} {{user.lastName}}"
+                <input type="radio" value="{{user.userId }}-{{user.firstName}} {{user.lastName}}"
                   [(ngModel)]="selectedUser">
               </div>
             </div>

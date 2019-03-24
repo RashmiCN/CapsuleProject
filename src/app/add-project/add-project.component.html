@@ -26,7 +26,7 @@
         <div class="col-md-2">
           <input type="checkbox" (change)="onSelect($event)" class="form-check-input" id="setDate"
             formControlName="setDate">
-          <label class="form-check-label" for="setDate">Set Start and End Date</label>
+          <label class="form-check-label" for="setDate">Start & End Date:</label>
         </div>
         <div class="col-md-3">
           <input type="date" class="form-control" formControlName="startDate" id="startDate" placeholder="Start Date">
@@ -44,7 +44,7 @@
           <input type="text" class="form-control" formControlName="manager" id="manager" required>
         </div>
         <div class="col-md-1">
-          <button type="button" class="btn btn-outline-info btn-sm" id="search" data-toggle="modal"
+          <button type="button" class="btn btn-info btn-sm" id="search" data-toggle="modal"
             data-target="#UserModal">SEARCH</button>
         </div>
       </div>
@@ -55,13 +55,13 @@
         <!-- <div class="col-md-5">
         </div> -->
         <div class="col-md-4">
-          <button type="submit" class="btn btn-outline-info btn-sm" id="add"
+          <button type="submit" class="btn btn-info btn-sm" id="add"  
             [disabled]="!(addProjectForm.get('manager').value) || !(addProjectForm.valid)" *ngIf="!editable">ADD</button>
-          <button type="button" class="btn btn-outline-info btn-sm" id="add"
+          <button type="button" class="btn btn-info btn-sm" id="add"
             [disabled]="!(addProjectForm.get('manager').value) || !(addProjectForm.valid)" *ngIf="editable"
             (click)="onEditSave()">UPDATE</button>
-          <button type="button" class="btn btn-outline-info btn-sm" id="reset" (click)="resetForm()" *ngIf="!editable">RESET</button>
-          <button type="button" class="btn btn-outline-info btn-sm" id="reset" (click)="cancelEdit()" *ngIf="editable">CANCEL</button>
+          <button type="button" class="btn btn-dark btn-sm" id="reset" style="margin-left: 5px;" (click)="resetForm()" *ngIf="!editable">RESET</button>
+          <button type="button" class="btn btn-danger btn-sm" id="reset" style="margin-left: 5px;" (click)="cancelEdit()" *ngIf="editable">CANCEL</button>
         </div>
       </div>
   
@@ -69,17 +69,12 @@
         <p style="color:red; margin-left: 1%;" *ngIf="error">{{error}}</p>
       </div>
   
-      <!-- <div class="row">
-        <div class="col-8 col-sm-8 col-md-8 col-lg-8">
-          <hr style="border: solid 1px blue">
-        </div>
-      </div> -->
     <hr>
     </form>
   
     <div class="row">
       <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search_text"
+        <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText"
           (ngModelChange)="onSearch(searchText)">
       </div>
     <!-- </div>
@@ -110,11 +105,11 @@
           </ul>
         </div>
         <div class="col-1 col-sm-1 col-md-1 col-lg-1">
-          <button type="button" class="btn btn-outline-info btn-sm" id="edit-btn" (click)="onEdit(project.projectId)"
+          <button type="button" class="btn btn-info btn-sm" id="edit-btn" (click)="onEdit(project.projectId)"
             [disabled]="editable && project.projectId == editId">Update</button>
           <br>
           <br>
-          <button type="button" class="btn btn-outline-info btn-sm" id="delete-btn" (click)="suspendProject(project.projectId)"
+          <button type="button" class="btn btn-danger btn-sm" id="delete-btn" (click)="suspendProject(project)"
             [disabled]="editable && project.projectId == editId">Suspend</button>
         </div>
       </div>

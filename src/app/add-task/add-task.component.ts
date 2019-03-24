@@ -6,8 +6,9 @@ import { UserService } from '../user.service';
 import { ProjectService } from '../project.service';
 import { TaskService } from '../task.service';
 import { IProject } from '../interfaces/Project';
-import { IParentTask, ITask } from '../interfaces/Task';
+import { ITask } from '../interfaces/Task';
 import { IUser } from '../interfaces/User';
+import { IParentTask } from '../interfaces/ParentTask';
 
 declare var $: any;
 
@@ -37,6 +38,12 @@ export class AddTaskComponent implements OnInit {
   addTask: ITask;
   editTask: ITask;
   addParent: IParentTask;
+  editUser: IUser;
+  tasktoedituser: ITask;
+  taskIdtoedituser: ITask;
+  thingstodotogettask: string;
+  oldUser: string;
+  oldUserId: string;
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
@@ -65,32 +72,46 @@ export class AddTaskComponent implements OnInit {
     if (this.wstaskId) {
       this.editable = true;
       this.taskService.getTask(this.wstaskId).subscribe(data => {
-        console.log(data)
+        console.log(data);
         // TO DO
         this.addTaskForm.patchValue({
-          task: data[0].task,
-          priority: data[0].priority,
+          task: data.task,
+          priority: data.priority,
           ifParent: false,
-          parentTask: data[0].parentTaskId ? data[0].parentTaskId['parentTask'] : null,
-          startDate: this.dateFormatter(new Date(data[0].startDate), 'yyyy-MM-dd'),
-          endDate: this.dateFormatter(new Date(data[0].endDate), 'yyyy-MM-dd'),
+          // parentTask: data.parentTaskId ? data.parentTaskId['parentTaskName'] : null,
+          startDate: this.dateFormatter(new Date(data.startDate), 'yyyy-MM-dd'),
+          endDate: this.dateFormatter(new Date(data.endDate), 'yyyy-MM-dd'),
         })
-        this.projectService.getProject(data[0].projectId).subscribe(result => {
+        this.projectService.getProject(data.projectId).subscribe(result => {
           this.addTaskForm.patchValue({
-            project: result[0].project
+            project: result.project
           })
-          this.selectedProject = result[0]._id + '-' + result[0].project
-          console.log("comehere for modal11111111111111111");
-          this.getParentTasks(result[0]._id);
+          this.selectedProject = result.projectId + '-' + result.project;
+          console.log('comehere for modal11111111111111111');
+          this.getParentTasks(result.projectId);
         })
-        this.userService.getuser(data[0].userId).subscribe(res => {
+        this.userService.getuserByProjectId(data.projectId).subscribe(res => {
           this.addTaskForm.patchValue({
-            user: res[0].firstName + ' ' + res[0].lastName
+            user: res.firstName + ' ' + res.lastName
           })
-          this.selectedUser = res[0]._id + '-' + res[0].firstName + ' ' + res[0].lastName
+          this.selectedUser = res.userId + '-' + res.firstName + ' ' + res.lastName;
+          this.oldUser = res.userId + '-' + res.firstName + ' ' + res.lastName;
+          this.oldUserId = res.userId;
         })
+        this.taskService.getParent(data.parentTaskId).subscribe(parnt => {
+          this.addTaskForm.patchValue({
+            parentTask: parnt.parentTaskName
+          })
+          this.selectedParent = data.parentTaskId;
+        })
+        // this.userService.getuser(data.userId).subscribe(res => {
+        //   this.addTaskForm.patchValue({
+        //     user: res.firstName + ' ' + res.lastName
+        //   })
+        //   this.selectedUser = res.userId + '-' + res.firstName + ' ' + res.lastName;
+        // })
         this.addTaskForm.get('ifParent').disable();
-        this.selectedParent = data[0].parentTaskId ? data[0].parentTaskId['_id'] + '-' + data[0].parentTaskId['parentTask'] : null
+        // this.selectedParent = data.parentTaskId ? data.parentTaskId['parentId'] + '-' + data.parentTaskId['parentTaskName'] : null;
       })
     }
   }
@@ -167,17 +188,14 @@ export class AddTaskComponent implements OnInit {
   }
 
   getParentTasks(id) {
-    this.taskService.getParents(id).subscribe(data => {
+    // this.taskService.getParents(id).subscribe(data => {
+    this.taskService.getParents().subscribe(data => {
       this.parentsList = data;
       console.log(this.parentsList);
-      this.parentsList = this.parentsList.filter(parent =>
-        parent.parentId === id
-        
-      );
-    console.log(this.parentsList);
+      console.log('this is our parent list' + this.parentsList);
       $('#ProjectModal').modal('hide');
     }, error => {
-      console.log(error)
+      console.log(error);
     })
   }
 
@@ -214,7 +232,7 @@ export class AddTaskComponent implements OnInit {
     if (this.addTaskForm.get('ifParent').value) {
       console.log('Parent task');
       this.addParent.parentId = parseInt(this.selectedProject.split('-')[0].trim(), 11);
-      this.addParent.parenttaskName = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
+      this.addParent.parentTaskName = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
       this.taskService.addParent(this.addParent).subscribe(data => {
         this.resetForm();
         this.error = null;
@@ -226,21 +244,55 @@ export class AddTaskComponent implements OnInit {
       console.log('Child task')
       // var subTask = new Task();
       this.addTask = this.addTaskForm.value;
-      this.addTask.projectId = parseInt(this.selectedProject.split('-')[0].trim(), 11);
-      this.addTask.userId = parseInt(this.selectedUser.split('-')[0].trim(), 11);
-      this.addTask.parentId = parseInt(this.selectedParent ? this.selectedParent.split('-')[0].trim() : null, 11);
+      this.addTask.projectId = this.selectedProject.split('-')[0].trim();
+      this.addTask.userId = this.selectedUser.split('-')[0].trim();
+      this.addTask.parentTaskId = this.selectedParent ? this.selectedParent.split('-')[0].trim() : null;
       // subTask.priority = this.addTaskForm.get('priority').value;
       // subTask.startDate = this.addTaskForm.get('startDate').value;
       // subTask.endDate = this.addTaskForm.get('endDate').value;
       // subTask.task = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
+      console.log(this.addTask);
       this.taskService.addTask(this.addTask).subscribe(data => {
-        this.resetForm();
+        console.log(this.addTask);
+        // this.resetForm();
+        this.updateUser();
         this.error = null;
       }, error => {
         this.error = 'Atleast one of the field has error !!';
         console.log(error);
       });
     }
+  }
+
+  updateUser() {
+    console.log('in update user');
+    console.log('lets see if we stil have add task', this.addTask)
+    this.thingstodotogettask = this.addTask.projectId + '-' + this.addTask.parentTaskId + '-' + this.addTask.task;
+    console.log(this.thingstodotogettask);
+    this.taskService.getTaskIdbyParentNProject(this.thingstodotogettask).subscribe(taskRet => {
+        this.tasktoedituser = taskRet;
+        console.log(this.tasktoedituser);
+        console.log(taskRet)
+    }, error => {
+        this.error = 'Problem getting the task id to update user !!';
+        console.log(error);
+    })
+
+    this.userService.getuser(this.addTask.userId).subscribe(data => {
+        data.taskId = this.tasktoedituser.taskId;
+        this.editUser = data;
+        console.log(this.editUser);
+        this.userService.updateuser(this.editUser).subscribe(updatedusr =>{
+          console.log('user edited!!!!!!!!!!!!!!!');
+        }, error => {
+            this.error = 'error updating user after inserting task!!';
+            console.log(error);
+        })
+        // this.userService
+    }, error => {
+        this.error = 'Atleast one of the field has error !!';
+        console.log(error);
+    })
   }
 
   onSelect(event) {
@@ -258,21 +310,54 @@ export class AddTaskComponent implements OnInit {
   updateTask() {
     this.editTask = this.addTaskForm.value;
 
-    this.editTask.parentId = parseInt(this.selectedParent ? this.selectedParent.split('-')[0].trim() : null, 11);
+    this.editTask.parentTaskId = this.selectedParent ;
     // subTask.priority = this.addTaskForm.get('priority').value;
     // subTask.startDate = this.addTaskForm.get('startDate').value;
     // subTask.endDate = this.addTaskForm.get('endDate').value;
     // subTask.task = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
-    this.editTask.projectId = parseInt(this.selectedProject.split('-')[0].trim(), 11);
-    this.editTask.userId = parseInt(this.selectedUser.split('-')[0].trim(), 11);
-
-    this.taskService.editTask(this.wstaskId, this.editTask).subscribe(data => {
-      this.resetForm();
+    this.editTask.projectId = this.selectedProject.split('-')[0].trim();
+    this.editTask.userId = this.selectedUser.split('-')[0].trim();
+    this.editTask.taskId = this.wstaskId;
+    console.log('this is the task we are gonna edit' + this.editTask);
+    this.taskService.editTask(this.editTask).subscribe(data => {
+      // this.resetForm();
       this.error = null;
     }, error => {
       this.error = 'Atleast one of the field has error !!';
       console.log(error);
-    })
+    });
+    if(this.selectedUser !== this.oldUser) {
+      console.log('this is our  new user update' + this.editTask.userId);
+      this.userService.getuser(this.editTask.userId).subscribe(data => {
+        data.taskId = this.wstaskId;
+        this.editUser = data;
+        console.log(this.editUser);
+        this.userService.updateuser(this.editUser).subscribe(updatedusr => {
+          console.log('user edited!!!!!!!!!!!!!!!');
+        }, error => {
+          this.error = 'error updating user after editing task!!';
+          console.log(error);
+        });
+      }, error => {
+          this.error = 'error getting user after editing task!!';
+          console.log(error);
+      });
+      console.log('this is to untag old user to task' + this.oldUserId);
+      this.userService.getuser(this.oldUserId).subscribe(data => {
+        data.taskId = '0';
+        this.editUser = data;
+        console.log(this.editUser);
+        this.userService.updateuser(this.editUser).subscribe(updatedusr => {
+          console.log('old user edited!!!!!!!!!!!!!!!');
+        }, error => {
+          this.error = 'error updating old user after editing task!!';
+          console.log(error);
+        });
+      }, error => {
+        this.error = 'error getting user after editing task!!';
+        console.log(error);
+      })
+    }
   }
 
   cancelEdit() {

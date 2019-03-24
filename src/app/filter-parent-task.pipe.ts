@@ -8,9 +8,10 @@ export class FilterParentTaskPipe implements PipeTransform {
   transform(parents: any[], searchText: string): any {
     if (!parents) {return [];}
     if (!searchText) {return parents;}
+    console.log(parents);
     searchText = searchText.toLowerCase();
     return parents.filter(parent => {
-      return (parent.parentTask.toLowerCase().includes(searchText));
+      return (parent.parentTaskName.toLowerCase().includes(searchText));
     });
   }
 

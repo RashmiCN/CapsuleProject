@@ -25,45 +25,35 @@
     <div>
       <hr>
     </div>
-  
-    <div *ngFor="let task of tasks">
-      <div class="row">
-        <div class="col-md-2">
-          <h6>Task</h6><br>
-          {{task.task}}
-        </div>
-        <div class="col-md-2">
-          <h6>Parent</h6><br>
-          {{task.parentTaskId?.parentTask}}
-        </div>
-        <div class="col-md-1">
-          <h6>Priority</h6><br>
-          {{task.priority}}
-        </div>
-        <div class="col-md-2">
-          <h6>Start</h6><br>
-          {{task.startDate | date: 'dd/MM/yyyy'}}
-        </div>
-        <div class="col-md-2">
-          <h6>End</h6><br>
-          {{task.endDate | date: 'dd/MM/yyyy'}}
-        </div>
-        <div class="col-md-1">
-          <h6>Status</h6><br>
-          {{task.status | titlecase}}
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-secondary" id="edit" (click)="editTask(task._id)"
-            [disabled]="task.status == 'completed'">Edit</button>
-          <button class="btn btn-secondary" id="delete" (click)="endTask(task._id)"
-            [disabled]="task.status == 'completed'">End</button>
-        </div>
-      </div>
-      <div>
-        <hr>
-      </div>
-    </div>
-  
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Task</th>
+          <th scope="col">Parent</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Start</th>
+          <th scope="col">End</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{task.task}}</td>
+          <td>parent</td>
+          <td>{{task.priority}}</td>
+          <td>{{task.startDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{task.endDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{task.status | titlecase}}</td>
+          <td>
+            <button class="btn btn-outline-dark btn-sm" id="edit" (click)="editTask(task.taskId)"
+              [disabled]="task.status == 'COMPL'">Edit</button>
+            <button class="btn btn-outline-danger btn-sm" style="margin-left:5px" id="delete" (click)="endTask(task.taskId)"
+              [disabled]="task.status == 'COMPL'">End</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>  
   </div>
   
   <!--Project Modal-->
@@ -84,7 +74,7 @@
           <div class="input-group mb-3" *ngFor="let project of projects | filterProject : searchProject : 'name'">
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="radio" value="{{project._id}}-{{project.project}}" [(ngModel)]="selectedProject">
+                <input type="radio" value="{{project.projectId}}-{{project.project}}" [(ngModel)]="selectedProject">
               </div>
             </div>
             &nbsp; {{project.project}}

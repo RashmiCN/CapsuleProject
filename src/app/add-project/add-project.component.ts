@@ -7,6 +7,8 @@ import { IUser } from '../interfaces/User';
 import { IProject } from '../interfaces/Project';
 import { ProjectService } from '../project.service';
 import { FilterProjectPipe } from '../filter-project.pipe';
+import { removeSummaryDuplicates } from '@angular/compiler';
+
 
 declare var $: any;
 
@@ -29,12 +31,21 @@ export class AddProjectComponent implements OnInit {
   searchUser: string;
   selectedUser: string;
   selectedUserId: string;
+  saveUserId: string;
+  saveUsereditId: string;
+  saveUseronE: string;
+  saveProjectId: string;
   editable: boolean;
   editId: string;
   error: string;
   tempProject: IProject;
   addProject: IProject;
   editProject: IProject;
+  updateUser:IUser;
+  projByNm: IProject;
+  userOnEdit: IUser;
+
+
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
@@ -130,15 +141,56 @@ export class AddProjectComponent implements OnInit {
   onAdd() {
     console.log(this.addProjectForm.value);
     this.addProject = this.addProjectForm.value;
-    console.log('printing the project to be added build ' + this.addProject);
+    // console.log('printing the project to be added build ' + this.addProject);
+    this.addProject.userId = this.selectedUserId;
+    this.saveUserId = this.selectedUserId;
+    // console.log('this is our user ' + this.saveUserId);
     console.log(this.addProject);
     this.projectService.addProject(this.addProject).subscribe(data => {
+      // console.log('this was the project added' + data);
       this.resetForm();
+      // console.log('logging user id', this.selectedUserId);
+      this.updateUserOnAdd(this.saveUserId);
       this.listProjects();
       this.error = null;
     }, error => {
       this.error = 'Atleast one of the field has error !!';
       console.log(error);
+    });
+  }
+
+  updateUserOnAdd(useridsent: string){
+    this.projectService.getProjectByPName(this.addProject.project).subscribe(projectret => {
+      // console.log('this is what we got' + projectret.projectId);
+      this.saveProjectId = projectret.projectId;
+      // console.log('saved project 11'+ this.saveProjectId);
+    }, error => {
+        this.error = 'Error getting project by name!!';
+        console.log(error);
+    });
+    
+    this.userService.getuser(useridsent).subscribe(result => {
+      // console.log('user id sent ' + useridsent);
+      // console.log('result ' + result.userId);
+      // console.log('saved project ' + this.saveProjectId);
+      result.projectId = this.saveProjectId;
+      this.updateUser = result;
+      // this.updateUser.employeeId = result.employeeId;
+      // this.updateUser.firstName = result.firstName;
+      // this.updateUser.lastName = result.lastName;
+      // this.updateUser.taskId = result.taskId;
+      // console.log("before setting pid" + this.updateUser);
+      // this.updateUser.projectId = this.saveProjectId;
+      // console.log('this is our user ' + this.updateUser);
+      this.userService.updateuser(this.updateUser).subscribe(updates => {
+        console.log('user updated!!!!!!!!!!!!!!!!!!');
+      }, error => {
+        this.error = 'Error updating User with project id !!';
+        console.log(error);
+      });
+      }, error => {
+        this.error = 'Error getting the user  !!';
+        console.log(error);
     });
   }
 
@@ -204,13 +256,16 @@ export class AddProjectComponent implements OnInit {
 
   onEdit(projectId) {
     this.projectService.getProject(projectId).subscribe(result => {
-      this.getManager(result[0].userId);
+      console.log('result is', result);
+      this.getuserIdfromprojectId(projectId);
+      // console.log('our manager ' + this.userOnEdit);
       this.addProjectForm.patchValue({
-        project: result[0].project,
-        startDate: this.dateFormatter(new Date(result[0].startDate), 'yyyy-MM-dd'),
-        endDate: this.dateFormatter(new Date(result[0].endDate), 'yyyy-MM-dd'),
-        priority: result[0].priority,
+        project: result.project,
+        startDate: this.dateFormatter(new Date(result.startDate), 'yyyy-MM-dd'),
+        endDate: this.dateFormatter(new Date(result.endDate), 'yyyy-MM-dd'),
+        priority: result.priority,
         setDate: false,
+        // manager: this.saveUseronE
       });
       this.editable = true;
       this.editId = projectId;
@@ -219,7 +274,23 @@ export class AddProjectComponent implements OnInit {
     });
   }
 
+  getuserIdfromprojectId(projectId) {
+    this.userService.getuserByProjectId(projectId).subscribe(data =>{
+      this.userOnEdit = data;
+      this.saveUseronE = data.firstName + ' ' + data.lastName;
+      console.log(this.userOnEdit);
+      console.log('here is our user' + this.saveUseronE);
+      this.addProjectForm.patchValue({
+        manager: this.saveUseronE
+      });
+    }, error => {
+        this.error = 'Error user fromproject id !!';
+        console.log(error);
+    });
+  }
+
   getManager(user_id) {
+    // console.log('ger passed to get manager' + user_id);
     this.userService.getuser(user_id).subscribe(data => {
       this.selectedUser = data.projectId + ' - ' + data.firstName + ' ' + data.lastName;
       this.addProjectForm.patchValue({
@@ -251,8 +322,8 @@ export class AddProjectComponent implements OnInit {
     });
   }
 
-  suspendProject(id) {
-    this.projectService.deleteProject(id).subscribe(data => {
+  suspendProject(project: IProject) {
+    this.projectService.deleteProject(project).subscribe(data => {
       this.listProjects();
     }, error => {
       console.log(error);
