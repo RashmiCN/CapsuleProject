@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTaskComponent } from './add-task.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FilterProjectPipe } from '../filter-project.pipe';
+import { FilterParentTaskPipe } from '../filter-parent-task.pipe';
+import { FilterUserPipe } from '../filter-user.pipe';
 
 describe('AddTaskComponent', () => {
   let component: AddTaskComponent;
@@ -12,11 +13,19 @@ describe('AddTaskComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddTaskComponent ],
-      imports: [ReactiveFormsModule, HttpClientModule, RouterTestingModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule, RouterTestingModule
+      ],
+      declarations: [
+        AddTaskComponent,
+        FilterProjectPipe,
+        FilterParentTaskPipe,
+        FilterUserPipe
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -26,6 +35,8 @@ describe('AddTaskComponent', () => {
   });
 
   it('should create', () => {
+    fixture = TestBed.createComponent(AddTaskComponent);
+    component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
