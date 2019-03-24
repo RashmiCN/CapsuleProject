@@ -14,46 +14,46 @@ const httpOptions = {
 })
 export class TaskService {
 
-  base_url = 'http://localhost:8083/';
+  baseURL = 'http://localhost:8083/';
 
   constructor(private _http: HttpClient) { }
 
-  addParent(parent): Observable<IParentTask> {
-    return this._http.post<IParentTask>(this.base_url + 'addParentTask', parent, httpOptions);
+  addParent(parent): Observable<string> {
+    return this._http.post<string>(this.baseURL + 'addParentTask/' + parent, httpOptions);
   }
 
   getParents(): Observable<IParentTask[]> {
-    return this._http.get<IParentTask[]>(this.base_url + 'getParentTasks/');
+    return this._http.get<IParentTask[]>(this.baseURL + 'getParentTasks/');
   }
 
   getParent(id): Observable<IParentTask> {
-    return this._http.get<IParentTask>(this.base_url + 'getParentTask/' + id);
+    return this._http.get<IParentTask>(this.baseURL + 'getParentTask/' + id);
   }
 
   addTask(task): Observable<ITask> {
     console.log(JSON.stringify(task));
-    return this._http.post<ITask>(this.base_url + 'addtask', JSON.stringify(task), httpOptions);
+    return this._http.post<ITask>(this.baseURL + 'addtask', JSON.stringify(task), httpOptions);
   }
 
   getTask(id): Observable<ITask> {
-    return this._http.get<ITask>(this.base_url + 'gettask/' + id);
+    return this._http.get<ITask>(this.baseURL + 'gettask/' + id);
   }
 
   getTaskIdbyParentNProject(thingstodotogettask): Observable<ITask> {
     console.log(thingstodotogettask)
-    return this._http.get<ITask>(this.base_url + 'getTaskbytask/' + thingstodotogettask);
+    return this._http.get<ITask>(this.baseURL + 'getTaskbytask/' + thingstodotogettask);
   }
 
   getTasks(id): Observable<ITask[]> {
     console.log('this is the id' + id);
-    return this._http.get<ITask[]>(this.base_url + 'gettasks/' + id);
+    return this._http.get<ITask[]>(this.baseURL + 'gettasks/' + id);
   }
 
   setTaskAsComplete(id): Observable<ITask> {
-    return this._http.put<ITask>(this.base_url + 'completeTask/' + id, httpOptions);
+    return this._http.put<ITask>(this.baseURL + 'completeTask/' + id, httpOptions);
   }
 
   editTask(task) {
-    return this._http.put<ITask>(this.base_url + 'edittask/' , task, httpOptions);
+    return this._http.put<ITask>(this.baseURL + 'edittask/' , task, httpOptions);
   }
 }

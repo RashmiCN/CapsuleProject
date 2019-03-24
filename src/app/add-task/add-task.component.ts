@@ -36,6 +36,7 @@ export class AddTaskComponent implements OnInit {
   error: string;
   editable = false;
   addTask: ITask;
+  tempTask: ITask;
   editTask: ITask;
   addParent: IParentTask;
   editUser: IUser;
@@ -44,6 +45,7 @@ export class AddTaskComponent implements OnInit {
   thingstodotogettask: string;
   oldUser: string;
   oldUserId: string;
+  savePTasNm: string;
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
@@ -217,23 +219,28 @@ export class AddTaskComponent implements OnInit {
 
   formStatusValid() {
     if (this.addTaskForm.get('ifParent').value == 'true') {
-      return !this.addTaskForm.valid || this.addTaskForm.get('project').value
+      return !this.addTaskForm.valid || this.addTaskForm.get('project').value;
     } else {
       console.log('here', !this.addTaskForm.valid ||
         !this.addTaskForm.get('project').value || this.addTaskForm.get('parentTask').value ||
         !this.addTaskForm.get('user').value)
       return !this.addTaskForm.valid ||
         !this.addTaskForm.get('project').value || this.addTaskForm.get('parentTask').value ||
-        !this.addTaskForm.get('user').value
+        !this.addTaskForm.get('user').value;
     }
   }
 
   onAdd() {
     if (this.addTaskForm.get('ifParent').value) {
       console.log('Parent task');
-      this.addParent.parentId = parseInt(this.selectedProject.split('-')[0].trim(), 11);
-      this.addParent.parentTaskName = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
-      this.taskService.addParent(this.addParent).subscribe(data => {
+      // this.addParent.parentId = parseInt(this.selectedProject.split('-')[0].trim(), 11);
+      // this.addParent.parentTaskName = this.titleCasePipe.transform(this.addTaskForm.get('task').value);
+      this.tempTask = this.addTaskForm.value;
+      this.savePTasNm = this.tempTask.task;
+      console.log('this is intermediate task', this.savePTasNm );
+      // this.addParent.parentTaskName = this.savePTasNm ;
+      // console.log('this is Parent tobe inserted', this.addParent);
+      this.taskService.addParent(this.savePTasNm).subscribe(data => {
         this.resetForm();
         this.error = null;
       }, error => {
@@ -254,7 +261,7 @@ export class AddTaskComponent implements OnInit {
       console.log(this.addTask);
       this.taskService.addTask(this.addTask).subscribe(data => {
         console.log(this.addTask);
-        // this.resetForm();
+        this.resetForm();
         this.updateUser();
         this.error = null;
       }, error => {
@@ -320,7 +327,7 @@ export class AddTaskComponent implements OnInit {
     this.editTask.taskId = this.wstaskId;
     console.log('this is the task we are gonna edit' + this.editTask);
     this.taskService.editTask(this.editTask).subscribe(data => {
-      // this.resetForm();
+      this.resetForm();
       this.error = null;
     }, error => {
       this.error = 'Atleast one of the field has error !!';
