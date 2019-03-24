@@ -9,7 +9,8 @@ import { tap, catchError } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
   })
 }
 @Injectable({
@@ -42,8 +43,8 @@ export class ProjectService {
     return this._http.post<IProject>(this.baseUrl + 'addproject', project, httpOptions);
   }
 
-  updateProject(project, id): Observable<IProject> {
-    return this._http.put<IProject>(this.baseUrl + `editproject/${id}`, project, httpOptions);
+  updateProject(project): Observable<IProject> {
+    return this._http.put<IProject>(this.baseUrl + 'editproject', project, httpOptions);
   }
 
   getProjects(): Observable<IProject[]> {

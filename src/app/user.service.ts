@@ -11,7 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  endpoint = 'http://localhost:8083/';
+  baseUrl = 'http://localhost:8083/';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export class UserService {
   addUser(user: IUser): Observable<IUser> {
     console.log('in user service');
     console.log(user);
-    return this.http.post<IUser>('http://localhost:8083/addUser', JSON.stringify(user), this.httpOptions)
+    return this.http.post<IUser>( this.baseUrl + 'addUser', JSON.stringify(user), this.httpOptions)
       .pipe(
         tap((user) => console.log('added user')),
         catchError(this.handleError)
@@ -53,38 +53,31 @@ export class UserService {
   }
   // Get all users
   getusers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>('http://localhost:8083/user');
+    return this.http.get<IUser[]>(this.baseUrl + 'user');
   }
 
   // Get a user
   getuser(id): Observable<IUser> {
     console.log(' in get user service' + id);
-    return this.http.get<IUser>('http://localhost:8083/getuser/' + id );
+    return this.http.get<IUser>(this.baseUrl + 'getuser/' + id );
 
   }
   getuserByProjectId(id): Observable<IUser> {
     console.log(' in get user service' + id);
-    return this.http.get<IUser>('http://localhost:8083/getuserbyproject/' + id );
+    return this.http.get<IUser>(this.baseUrl + 'getuserbyproject/' + id );
 
   }
 
-  // // Get a user
-  // getuserbyEmpId(id): Observable<IUser> {
-  //   console.log(' in get user service' + id);
-  //   return this.http.get<IUser>('http://localhost:8083/getuseremp/${id}');
-
-  // }
-
   // PUT method to update user
   updateuser(user: IUser): Observable<IUser> {
-    return this.http.put<IUser>('http://localhost:8083/edituser', JSON.stringify(user), this.httpOptions).pipe(
+    return this.http.put<IUser>(this.baseUrl + 'edituser', JSON.stringify(user), this.httpOptions).pipe(
       tap(_ => console.log('updated')),
       catchError(this.handleError)
     );
   }
 
   deleteUser(user: IUser): Observable<IUser> {
-    return this.http.put<IUser>('http://localhost:8083/deleteUser', JSON.stringify(user), this.httpOptions).pipe(
+    return this.http.put<IUser>(this.baseUrl + 'deleteUser', JSON.stringify(user), this.httpOptions).pipe(
       tap(_ => console.log('deleted')),
       catchError(this.handleError)
     );

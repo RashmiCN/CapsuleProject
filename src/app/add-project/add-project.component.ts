@@ -34,6 +34,10 @@ export class AddProjectComponent implements OnInit {
   saveUserId: string;
   saveUsereditId: string;
   saveUseronE: string;
+  saveUserforE: string;
+  oldUserId: string;
+  newUserId: string;
+  userupdateind: boolean;
   saveProjectId: string;
   editable: boolean;
   editId: string;
@@ -42,6 +46,7 @@ export class AddProjectComponent implements OnInit {
   addProject: IProject;
   editProject: IProject;
   updateUser:IUser;
+  tempUsr: IUser;
   projByNm: IProject;
   userOnEdit: IUser;
 
@@ -278,6 +283,7 @@ export class AddProjectComponent implements OnInit {
     this.userService.getuserByProjectId(projectId).subscribe(data =>{
       this.userOnEdit = data;
       this.saveUseronE = data.firstName + ' ' + data.lastName;
+      this.saveUserforE = data.userId;
       console.log(this.userOnEdit);
       console.log('here is our user' + this.saveUseronE);
       this.addProjectForm.patchValue({
@@ -308,9 +314,19 @@ export class AddProjectComponent implements OnInit {
     // project.priority = this.addProjectForm.get('priority').value;
     // project.userId = this.selectedUser.split('-')[0].trim();
     this.editProject = this.addProjectForm.value;
-    this.editProject.userId = this.selectedUser.split('-')[0].trim();
+    if (this.selectedUser != null) {
+      this.editProject.userId = this.selectedUser.split('-')[0].trim();
+      this.userupdateind = true;
+      this.oldUserId = this.saveUserforE;
+      this.newUserId = this.selectedUser.split('-')[0].trim();
+    } else {
+      this.editProject.userId = this.saveUserforE ;
+      this.userupdateind = false;
+      this.oldUserId = this.saveUserforE;
+    }
     this.editProject.projectId = this.editId;
-    this.projectService.updateProject(this.editProject, this.editId).subscribe(data => {
+    console.log('lets finaly get down to editing ' + this.editProject);
+    this.projectService.updateProject(this.editProject).subscribe(data => {
       this.editable = false;
       this.editId = null;
       this.resetForm();
@@ -320,6 +336,42 @@ export class AddProjectComponent implements OnInit {
       this.error = 'Atleast one of the field has error !!';
       console.log(error);
     });
+    if (this.userupdateind) {
+      // update project for new user
+      this.userService.getuser(this.newUserId).subscribe(newusr => {
+        console.log('get uniq done');
+        newusr.projectId = this.editProject.projectId;
+        this.tempUsr = newusr;
+        // update here
+        this.userService.updateuser(this.tempUsr).subscribe(updatdusr => {
+          console.log('user updaed for edit project on prject manger change');
+        }, error => {
+          this.error = 'failed on new user update!!!';
+          console.log(error);
+        });
+      }, error => {
+        this.error = 'failed getting the new user for update !!';
+        console.log(error);
+      });
+
+      // old user update................
+      // update project for new user
+      this.userService.getuser(this.oldUserId).subscribe(oldusr => {
+        console.log('get uniq  for old user done');
+        oldusr.projectId = '0';
+        this.tempUsr = oldusr;
+        // update here
+        this.userService.updateuser(this.tempUsr).subscribe(updatOusr => {
+          console.log('Old user updaed for edit project on prject manger change');
+        }, error => {
+          this.error = 'failed on old user update!!!';
+          console.log(error);
+        });
+      }, error => {
+        this.error = 'failed getting the old user for update !!';
+        console.log(error);
+      });
+    }
   }
 
   suspendProject(project: IProject) {

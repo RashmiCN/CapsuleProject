@@ -29,5 +29,101 @@ describe('ProjectService', () => {
     expect(service).toBeTruthy();
   });
 
-  
+  it('testing project creation', () => {
+
+    const projectcr8tst = {
+      endDate: '2019-03-20T00:00:00.000Z',
+      priority: 16,
+      project: 'TIM',
+      startDate: '2019-03-30T00:00:00.000Z',
+      userId: '1123',
+    }
+
+    service.addProject(projectcr8tst).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'POST'
+        && request.url == `${service.baseUrl}addproject`;
+    }).flush(projectcr8tst);
+
+  });
+
+  it('testing update project', () => {
+
+    const project = {
+      endDate: '2019-03-30T00:00:00.000Z',
+      priority: 2,
+      project: 'DCM',
+      startDate: '2019-04-10T00:00:00.000Z',
+      userId: '1123',
+    }
+
+    service.updateProject(project).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'PUT'
+        && request.url == `${service.baseUrl}editproject`;
+    }).flush(project);
+
+  });
+
+  it('lets try delete project', () => {
+
+    const projectdel = {
+      endDate: '2019-03-30T00:00:00.000Z',
+      priority: 2,
+      project: 'DCM',
+      startDate: '2019-04-10T00:00:00.000Z',
+      userId: '1123',
+    }
+    service.deleteProject(projectdel).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'PUT'
+        && request.url == `${service.baseUrl}deleteproject`;
+    }).flush(projectdel);
+
+  });
+
+  it('get project id by project name', () => {
+
+    service.getProjectByPName('TIM').subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'GET'
+        && request.url == `${service.baseUrl}getprojectByPName/TIM`;
+    });
+
+  });
+
+  it('get uniq test', () => {
+
+    service.getProject(11).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'GET'
+        && request.url == `${service.baseUrl}getproject/11`;
+    });
+  });
+
+  it('get all completed tasks', () => {
+
+    service.getCompletedTasks(3).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'GET'
+        && request.url == `${service.baseUrl}getcompleted/3`;
+    });
+  });
+
+  it('get all tasks for the project', () => {
+
+    service.getTotalTasks(123).subscribe();
+
+    httpMock.expectOne((request) => {
+      return request.method == 'GET'
+        && request.url == `${service.baseUrl}getProjectTasks/123`
+    });
+
+  });
 });
