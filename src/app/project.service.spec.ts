@@ -70,11 +70,14 @@ describe('ProjectService', () => {
   it('lets try delete project', () => {
 
     const projectdel = {
-      endDate: '2019-03-30T00:00:00.000Z',
-      priority: 2,
+      projectId: '1235',
       project: 'DCM',
-      startDate: '2019-04-10T00:00:00.000Z',
-      userId: '1123',
+      startDate: '2019-03-10T00:00:00.000Z',
+      endDate: '2019-03-30T00:00:00.000Z',
+      priority: 23,
+      userId: '9',
+      tasks: 10,
+      completed: 5,
     }
     service.deleteProject(projectdel).subscribe();
 
