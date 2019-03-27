@@ -49,7 +49,7 @@ describe('TaskService', () => {
       startDate: '2019-03-23T00:00:00.000Z',
       endDate: '2019-04-23T00:00:00.000Z',
       priority: 10,
-      status: 'started'
+      status: 'NEW'
     };
 
     service.addTask(taskTest).subscribe();
